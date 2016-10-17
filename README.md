@@ -1,1 +1,1 @@
-# Ooyala V4 Package Manager
+# Ooyala Player Package Manager
