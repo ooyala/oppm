@@ -1,0 +1,95 @@
+doctype html
+html(lang="en")
+  head
+    title="Ooyala Package Manager Sample Page"
+    link(rel="shortcut icon" href="http://www.ooyala.com/sites/ooyala.com/files/favicon.png" type="image/png")
+    link(href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet")
+    //- If package is bundled include only bundle script, otherwise load all stylesheets
+    if isBundle
+      script(type="text/javascript" src="bundle.js")
+    else
+      each styleSheetUrl in styleSheets
+        link(rel="stylesheet" href=styleSheetUrl)
+    //- If skin wasn't included use fallback css
+    if !skinIncluded
+      link(rel="stylesheet", href=skinFallbackUrls.css)
+    style
+      include fragments/styles.css
+    script.
+      if (window.location.protocol !== 'file:') document.documentElement.className += " hosted";
+  body
+    .not-hosted-notification
+      | Please host this sample page on a web server if you want to see the player in action!
+    .header
+
+    .hero-content
+      .player-title Ooyala Player V#{version}
+      .player-container
+        #ooplayer
+
+    .guidelines-section
+
+      .not-hosted-notice
+        .guidelines-msg
+          strong
+            | Please note:
+          | You'll need to host this sample page in web server in order to
+          | see the player in action. Your package contains a script that will run a test server for you.
+          | Simply run these commands in a terminal window to fire up a server:
+        pre.prettyprint
+          | cd&nbsp;
+          i
+            | folder_where_you_unzipped_your_package
+        pre.prettyprint
+          | node run_sample.js
+
+      .heading
+        | Player Setup Guidelines
+
+      .guidelines-msg
+        = 'Add these stylesheets to the <head> of your page:'
+      pre.prettyprint
+        - var html = ''
+        each styleSheetUrl in styleSheets
+          - html = html + '<link href="' + styleSheetUrl + '"/>\n'
+        = html
+
+      .guidelines-msg
+        = 'Include the player core and plugin scripts before your embed code:'
+      pre.prettyprint
+        - var html = ''
+        each scriptUrl in scripts
+          - html = html + '<script src="' + scriptUrl + '"></script>\n'
+        = html
+
+      .guidelines-msg
+        = 'Create and Embed Your Player:'
+      pre.prettyprint
+          include fragments/player.js
+
+      .guidelines-msg
+        | For detailed setup instructions, please refer to the&nbsp;
+        a.link(href="http://support.ooyala.com/developers/documentation/reference/pbv4_web_tutorial.html", target="_blank")
+          | Official Player V4 Documentation
+        | .
+
+    .footer
+      | © 2016 Ooyala, Inc.
+
+    script(src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js")
+    //- Add all script files if build is not bundled
+    if !isBundle
+      each scriptUrl in scripts
+        script(type="text/javascript" src=scriptUrl)
+
+    //- If skin was included, use it, otherwise use fallback url
+    if skinIncluded
+      //- Bundles will already have this variable set to the actual json contents
+      if !isBundle
+        script window.ooSkinJson = 'skin-plugin/skin.json';
+    else
+      script window.ooSkinJson = '#{skinFallbackUrls.json}';
+
+    script
+      include fragments/player.js
+      include fragments/sample_page.js
