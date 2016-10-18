@@ -107,15 +107,62 @@ body {
   font-weight: bold;
 }
 
-pre.prettyprint {
+.form-label {
+  color: #444;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0 0 16px 0;
+}
+
+.form-input {
+  color: #6d6d6d;
+  height: 32px;
+  font-family: monospace;
+  font-size: 13px;
+  white-space: pre;
+  resize: vertical;
+  background-color: #fcfcfc;
+  box-shadow: 2px 2px 0 0 rgba(224, 224, 224, 0.5);
+}
+
+textarea.form-input {
+  height: 168px;
+}
+
+.form-input,
+.prettyprint {
+  width: 100%;
   margin: 32px auto;
   margin-top: 0;
   padding: 8px !important;
   border: none !important;
   border-radius: 2px;
-  background-color: #fcfcfc;
-  box-shadow: 2px 2px 0 0 rgba(224, 224, 224, 0.5);
-  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.btn-container {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.action-btn {
+  color: #fff;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 36px;
+  font-size: 17px;
+  background-color: #0094bd;
+  text-align: center;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 250ms ease;
+  outline: none;
+}
+
+.action-btn:hover {
+  opacity: 0.8;
 }
 
 #ooplayer {
@@ -123,12 +170,80 @@ pre.prettyprint {
   height: 100% !important;
 }
 
+.hosted .not-hosted-notice,
+.hosted .not-hosted-notification {
+  display: none;
+}
+
 .not-hosted-notice {
   padding: 10px;
   background-color: #dedede;
 }
 
-.hosted .not-hosted-notice,
-.hosted .not-hosted-notification {
-  display: none;
+.not-hosted-notice .prettyprint {
+  background-color: #efefef !important;
+}
+
+.prettyprint {
+  font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
+  font-size: 13px;
+  background-color: #f1efee !important;
+  background-color: #e6e6e6 !important;
+}
+
+/* string content */
+.prettyprint .str {
+  color: #7b9726;
+}
+/* keyword */
+.prettyprint .kwd {
+  color: #6666ea;
+}
+/* comment */
+.prettyprint .com {
+  color: #9c9491;
+}
+/* type name */
+.prettyprint .typ {
+  color: #407ee7;
+}
+/* literal value */
+.prettyprint .lit {
+  color: #df5320;
+}
+/* punctuation */
+.prettyprint .pun {
+  color: #1b1918;
+}
+/* lisp open bracket */
+.prettyprint .opn {
+  color: #1b1918;
+}
+/* lisp close bracket */
+.prettyprint .clo {
+  color: #1b1918;
+}
+/* markup tag name */
+.prettyprint .tag {
+  color: #f22c40;
+}
+/* markup attribute name */
+.prettyprint .atn {
+  color: #df5320;
+}
+/* markup attribute value */
+.prettyprint .atv {
+  color: #3d97b8;
+}
+/* declaration */
+.prettyprint .dec {
+  color: #df5320;
+}
+/* variable name */
+.prettyprint .var {
+  color: #f22c40;
+}
+/* function name */
+.prettyprint .fun {
+  color: #407ee7;
 }

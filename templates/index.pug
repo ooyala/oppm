@@ -47,7 +47,10 @@ html(lang="en")
         | Player Setup Guidelines
 
       .guidelines-msg
-        = 'Add these stylesheets to the <head> of your page:'
+        = 'Add these stylesheets to the '
+        strong
+          = '<head>'
+        = ' of your page:'
       pre.prettyprint
         - var html = ''
         each styleSheetUrl in styleSheets
@@ -63,15 +66,25 @@ html(lang="en")
         = html
 
       .guidelines-msg
-        = 'Create and Embed Your Player:'
-      pre.prettyprint
-          include fragments/player.js
-
-      .guidelines-msg
         | For detailed setup instructions, please refer to the&nbsp;
         a.link(href="http://support.ooyala.com/developers/documentation/reference/pbv4_web_tutorial.html", target="_blank")
           | Official Player V4 Documentation
         | .
+
+      .heading
+        | Customize this Test Page:
+
+      .form-label
+        = 'Embed code:'
+      input#embed-code-input.form-input(type="text")
+
+      .form-label
+        = 'Player options:'
+      textarea#player-options-input.form-input
+
+      .btn-container
+        button#update-settings-btn.action-btn(type="button")
+          | Update Player Settings
 
     .footer
       | © 2016 Ooyala, Inc.
@@ -91,5 +104,4 @@ html(lang="en")
       script window.ooSkinJson = '#{skinFallbackUrls.json}';
 
     script
-      include fragments/player.js
       include fragments/sample_page.js
