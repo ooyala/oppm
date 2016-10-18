@@ -39,7 +39,7 @@ body {
   box-sizing: border-box;
 }
 
-.not-hosted-notification {
+.notification {
   color: #fff;
   height: 42px;
   line-height: 42px;
@@ -48,7 +48,29 @@ body {
   background-color: #0094bd;
 }
 
-.link {
+.notification.not-hosted {
+  color: #fff;
+  background-color: #0094bd;
+}
+
+.notification.error {
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #c13f3f;
+  transform: translateY(-100%);
+  transition: transform 250ms ease;
+  z-index: 100000;
+}
+
+.notification.error.active {
+  transform: translateY(0);
+};
+
+.link,
+.link:visited {
   color: #0094bd;
   text-decoration: none;
   transition: all 200ms ease;
@@ -126,7 +148,7 @@ body {
 }
 
 textarea.form-input {
-  height: 168px;
+  min-height: 168px;
 }
 
 .form-input,
@@ -171,7 +193,7 @@ textarea.form-input {
 }
 
 .hosted .not-hosted-notice,
-.hosted .not-hosted-notification {
+.hosted .notification.not-hosted {
   display: none;
 }
 
@@ -187,7 +209,6 @@ textarea.form-input {
 .prettyprint {
   font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
   font-size: 13px;
-  background-color: #f1efee !important;
   background-color: #e6e6e6 !important;
 }
 

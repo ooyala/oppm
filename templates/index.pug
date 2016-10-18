@@ -18,7 +18,7 @@ html(lang="en")
     script.
       if (window.location.protocol !== 'file:') document.documentElement.className += " hosted";
   body
-    .not-hosted-notification
+    .notification.not-hosted
       | Please host this sample page on a web server if you want to see the player in action!
     .header
 
@@ -83,11 +83,13 @@ html(lang="en")
       textarea#player-options-input.form-input
 
       .btn-container
-        button#update-settings-btn.action-btn(type="button")
-          | Update Player Settings
+        button#apply-params-btn.action-btn(type="button")
+          | Apply Player Settings
 
     .footer
       | © 2016 Ooyala, Inc.
+
+    #error-notification.notification.error
 
     script(src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js")
     //- Add all script files if build is not bundled

@@ -13,19 +13,42 @@ var DEFAULT_PLAYER_OPTIONS = {
 
 var _embedCodeInput = null;
 var _playerOptionsInput = null;
-var _updateSettingsBtn = null;
+var _applyParamsBtn = null;
+var _errorNotification = null;
+var _errorNotificationTimeout = null;
 
 function initializeUI() {
   _embedCodeInput = document.getElementById('embed-code-input');
   _playerOptionsInput = document.getElementById('player-options-input');
-  _updateSettingsBtn = document.getElementById('update-settings-btn');
+  _applyParamsBtn = document.getElementById('apply-params-btn');
+  _errorNotification = document.getElementById('error-notification');
 
-  _updateSettingsBtn.addEventListener('click', function() {
-    updatePlayerSettings();
+  _applyParamsBtn.addEventListener('click', function() {
+    applyFormParams();
+  });
+  _playerOptionsInput.addEventListener('blur', function() {
+    try {
+      var options = JSON.parse(_playerOptionsInput.value);
+      _playerOptionsInput.value = JSON.stringify(options, null, '  ');
+      updatePlayerOptionsInputHeight();
+    } catch (err) {
+      console.log("Failed to parse player options:", err);
+    }
   });
 }
 
-function getQueryParameter(variable) {
+function getInitialParams() {
+  var params = {};
+  params.ec = getQueryStringParam('ec') || DEFAULT_EMBED_CODE;
+  params.options = JSON.parse(getQueryStringParam('options')) || DEFAULT_PLAYER_OPTIONS;
+  // Default embed code doesn't have a skin.json since this is generated dynamically
+  if (params.options && params.options.skin && !params.options.skin.config) {
+    params.options.skin.config = window.ooSkinJson;
+  }
+  return params;
+}
+
+function getQueryStringParam(variable) {
   var query = window.location.search.substring(1);
   var params = query.split('&');
   for (var i = 0; i < params.length; i++) {
@@ -37,41 +60,83 @@ function getQueryParameter(variable) {
   return null;
 }
 
-function updateFormWithSettings(embedCode, playerOptions) {
-  _embedCodeInput.value = embedCode;
-  _playerOptionsInput.value = JSON.stringify(playerOptions, null, '  ');
+function buildQueryString(parameters) {
+  var qs = '';
+  for (var key in parameters) {
+    var value = parameters[key];
+    // Value is an object literal, stringify
+    if (Object.prototype.toString.call(value) === '[object Object]') {
+      value = JSON.stringify(value);
+    }
+    qs += encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&';
+  }
+  if (qs) {
+    qs = '?' + qs;
+  }
+  return qs;
 }
 
-function updateQSWithSettings(embedCode, playerOptions) {
-  var queryStringParams = '?ec=' + encodeURIComponent(embedCode);
-  queryStringParams += '&options=' + encodeURIComponent(JSON.stringify(playerOptions));
-  // update URL without refreshing page
-  if (window.history && window.history.pushState) {
-    window.history.pushState(window.history.state, '', queryStringParams);
+function updateFormWithParams(params) {
+  _embedCodeInput.value = params.ec || '';
+  _playerOptionsInput.value = JSON.stringify(params.options || '', null, '  ');
+  updatePlayerOptionsInputHeight();
+}
+
+function updateQSWithParams(params) {
+  var queryString = buildQueryString(params);
+  // Update URL without refreshing page
+  if (queryString && window.history && window.history.pushState) {
+    window.history.pushState(window.history.state, '', queryString);
   }
 }
 
-function updatePlayerSettings() {
-  var embedCode = _embedCodeInput.value;
-  var playerOptions = JSON.parse(_playerOptionsInput.value);
-  updateQSWithSettings(embedCode, playerOptions);
+function applyFormParams() {
+  var params = {
+    ec: null,
+    options: null
+  };
+  // Embed code must be present
+  params.ec = _embedCodeInput.value;
+  if (!params.ec) {
+    _embedCodeInput.focus();
+    showNotification('Embed code is required');
+    return;
+  }
+  // Player options must be parseable
+  try {
+    params.options = JSON.parse(_playerOptionsInput.value);
+  } catch (err) {
+    _playerOptionsInput.focus();
+    showNotification('Player options should be valid JSON');
+    return;
+  }
+  updateQSWithParams(params);
   window.scrollTo(0, 0);
   location.reload();
 }
 
-window.addEventListener('load', function() {
-  var embedCode = getQueryParameter('ec') || DEFAULT_EMBED_CODE;
-  var playerOptions = JSON.parse(getQueryParameter('options')) || DEFAULT_PLAYER_OPTIONS;
+function updatePlayerOptionsInputHeight() {
+  _playerOptionsInput.style.height = _playerOptionsInput.scrollHeight + 'px';
+}
 
-  if (playerOptions && playerOptions.skin && !playerOptions.skin.config) {
-    playerOptions.skin.config = window.ooSkinJson;
-  }
+function showNotification(message) {
+  _errorNotification.innerHTML = message;
+  _errorNotification.classList.add('active');
+
+  clearTimeout(_errorNotificationTimeout);
+  _errorNotificationTimeout = setTimeout(function() {
+    _errorNotification.classList.remove('active');
+  }, 4000);
+}
+
+window.addEventListener('load', function() {
+  var params = getInitialParams();
 
   initializeUI();
-  updateFormWithSettings(embedCode, playerOptions);
-  updateQSWithSettings(embedCode, playerOptions);
+  updateFormWithParams(params);
+  updateQSWithParams(params);
 
   OO.ready(function() {
-    window.pp = OO.Player.create('ooplayer', embedCode, playerOptions);
+    window.pp = OO.Player.create('ooplayer', params.ec, params.options);
   });
 });
