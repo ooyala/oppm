@@ -67,17 +67,22 @@ body {
 
 .notification.error.active {
   transform: translateY(0);
-};
+}
 
 .link,
 .link:visited {
   color: #0094bd;
-  text-decoration: none;
+  text-decoration: underline;
+  cursor: pointer;
   transition: all 200ms ease;
 }
 
 .link:hover {
   opacity: 0.8;
+}
+
+.link.small {
+  font-size: 14px;
 }
 
 .player-title {

@@ -46,16 +46,17 @@ html(lang="en")
       .heading
         | Player Setup Guidelines
 
-      .guidelines-msg
-        = 'Add these stylesheets to the '
-        strong
-          = '<head>'
-        = ' of your page:'
-      pre.prettyprint
-        - var html = ''
-        each styleSheetUrl in styleSheets
-          - html = html + '<link href="' + styleSheetUrl + '"/>\n'
-        = html
+      if styleSheets.length
+        .guidelines-msg
+          = 'Add these stylesheets to the '
+          strong
+            = '<head>'
+          = ' of your page:'
+        pre.prettyprint
+          - var html = ''
+          each styleSheetUrl in styleSheets
+            - html = html + '<link href="' + styleSheetUrl + '"/>\n'
+          = html
 
       .guidelines-msg
         = 'Include the player core and plugin scripts before your embed code:'
@@ -80,11 +81,15 @@ html(lang="en")
 
       .form-label
         = 'Player options:'
-      textarea#player-options-input.form-input
+      textarea#player-options-input.form-input(autocomplete="off", autocorrect="off", autocapitalize="off", spellcheck="false")
 
       .btn-container
         button#apply-params-btn.action-btn(type="button")
           | Apply Player Settings
+
+      .btn-container
+        a#restore-defaults-btn.link.small
+          | Restore Defaults
 
     .footer
       | © 2016 Ooyala, Inc.

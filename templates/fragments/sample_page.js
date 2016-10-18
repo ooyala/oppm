@@ -16,17 +16,29 @@ var _playerOptionsInput = null;
 var _applyParamsBtn = null;
 var _errorNotification = null;
 var _errorNotificationTimeout = null;
+var _applyingParams = false;
 
 function initializeUI() {
   _embedCodeInput = document.getElementById('embed-code-input');
   _playerOptionsInput = document.getElementById('player-options-input');
   _applyParamsBtn = document.getElementById('apply-params-btn');
+  _restoreDefaultsBtn = document.getElementById('restore-defaults-btn');
   _errorNotification = document.getElementById('error-notification');
 
   _applyParamsBtn.addEventListener('click', function() {
-    applyFormParams();
+    applyFormParams(true);
   });
+
+  _applyParamsBtn.addEventListener('mousedown', function() {
+    _applyingParams = true;
+  });
+
+  _applyParamsBtn.addEventListener('mouseup', function() {
+    _applyingParams = false;
+  });
+
   _playerOptionsInput.addEventListener('blur', function() {
+    if (_applyingParams) return;
     try {
       var options = JSON.parse(_playerOptionsInput.value);
       _playerOptionsInput.value = JSON.stringify(options, null, '  ');
@@ -35,13 +47,26 @@ function initializeUI() {
       console.log("Failed to parse player options:", err);
     }
   });
+
+  _restoreDefaultsBtn.addEventListener('click', function() {
+    var params = {};
+    params.ec = DEFAULT_EMBED_CODE;
+    params.options = DEFAULT_PLAYER_OPTIONS;
+    updateFormWithParams(params);
+    applyFormParams(false);
+  });
 }
 
 function getInitialParams() {
   var params = {};
   params.ec = getQueryStringParam('ec') || DEFAULT_EMBED_CODE;
-  params.options = JSON.parse(getQueryStringParam('options')) || DEFAULT_PLAYER_OPTIONS;
-  // Default embed code doesn't have a skin.json since this is generated dynamically
+  try {
+    params.options = JSON.parse(getQueryStringParam('options')) || DEFAULT_PLAYER_OPTIONS;
+  } catch (err) {
+    params.options = DEFAULT_PLAYER_OPTIONS;
+  }
+  // Default embed code doesn't have a skin.json since this is generated dynamically.
+  // window.ooSkinJson is injected by the pug template
   if (params.options && params.options.skin && !params.options.skin.config) {
     params.options.skin.config = window.ooSkinJson;
   }
@@ -90,7 +115,7 @@ function updateQSWithParams(params) {
   }
 }
 
-function applyFormParams() {
+function applyFormParams(scroll) {
   var params = {
     ec: null,
     options: null
@@ -111,7 +136,9 @@ function applyFormParams() {
     return;
   }
   updateQSWithParams(params);
-  window.scrollTo(0, 0);
+  if (scroll) {
+    window.scrollTo(0, 0);
+  }
   location.reload();
 }
 
