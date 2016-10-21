@@ -152,12 +152,20 @@ body {
 .form-input {
   color: #6d6d6d;
   height: 32px;
+  padding: 8px;
   font-family: monospace;
   font-size: 13px;
   white-space: pre;
   resize: vertical;
   background-color: #f9f9f9;
-  box-shadow: 2px 2px 0 0 rgba(0, 148, 189, 0.4);
+  border: 1px solid #f2f2f2;
+  box-shadow: 2px 2px 0 1px rgba(0, 148, 189, 0.4);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #f9f9f9;
+  box-shadow: 0px 0px 0 3px #0094bd;
 }
 
 textarea.form-input {
@@ -169,9 +177,7 @@ textarea.form-input {
   width: 100%;
   margin: 32px auto;
   margin-top: 0;
-  padding: 8px !important;
-  border: none !important;
-  border-radius: 2px;
+  border-radius: 4px;
   box-sizing: border-box;
 }
 
@@ -221,8 +227,10 @@ textarea.form-input {
 }
 
 .prettyprint {
+  padding: 8px !important;
   font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
   font-size: 13px;
+  border: none !important;
   background-color: #e6e6e6 !important;
 }
 

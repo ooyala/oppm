@@ -61,6 +61,7 @@ const app = () => {
   })
   .then(answers => runPackageManager(params, buildType, answers))
   .catch((error) => {
+    spinner.stop(true);
     console.log(chalk.red(error.message));
   });
 };
