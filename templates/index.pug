@@ -22,15 +22,16 @@ html(lang="en")
       | Please host this sample page on a web server if you want to see the player in action!
     .header
 
+    .player-title Ooyala Player V#{version}
+
     .hero-content
-      .player-title Ooyala Player V#{version}
       .player-container
         #ooplayer
 
-    .guidelines-section
+    .sub-section
 
       .not-hosted-notice
-        .guidelines-msg
+        .section-msg
           strong
             | Please note:
           | You'll need to host this sample page in web server in order to
@@ -47,7 +48,7 @@ html(lang="en")
         | Player Setup Guidelines
 
       if styleSheets.length
-        .guidelines-msg
+        .section-msg
           = 'Add these stylesheets to the '
           strong
             = '<head>'
@@ -58,7 +59,7 @@ html(lang="en")
             - html = html + '<link href="' + styleSheetUrl + '"/>\n'
           = html
 
-      .guidelines-msg
+      .section-msg
         = 'Include the player core and plugin scripts before your embed code:'
       pre.prettyprint
         - var html = ''
@@ -66,30 +67,32 @@ html(lang="en")
           - html = html + '<script src="' + scriptUrl + '"></script>\n'
         = html
 
-      .guidelines-msg
+      .section-msg
         | For detailed setup instructions, please refer to the&nbsp;
         a.link(href="http://support.ooyala.com/developers/documentation/reference/pbv4_web_tutorial.html", target="_blank")
           | Official Player V4 Documentation
         | .
 
-      .heading
-        | Customize this Test Page:
+    .customize-section
+      .sub-section
+        .heading
+          | Customize this Test Page:
 
-      .form-label
-        = 'Embed code:'
-      input#embed-code-input.form-input(type="text")
+        .form-label
+          = 'Embed code:'
+        input#embed-code-input.form-input(type="text")
 
-      .form-label
-        = 'Player options:'
-      textarea#player-options-input.form-input(autocomplete="off", autocorrect="off", autocapitalize="off", spellcheck="false")
+        .form-label
+          = 'Player options:'
+        textarea#player-options-input.form-input(autocomplete="off", autocorrect="off", autocapitalize="off", spellcheck="false")
 
-      .btn-container
-        button#apply-params-btn.action-btn(type="button")
-          | Apply Player Settings
+        .btn-container
+          button#apply-params-btn.action-btn(type="button")
+            | Apply Player Settings
 
-      .btn-container
-        a#restore-defaults-btn.link.small
-          | Restore Defaults
+        .btn-container
+          a#restore-defaults-btn.link.small
+            | Restore Defaults
 
     .footer
       | © 2016 Ooyala, Inc.

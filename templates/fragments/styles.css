@@ -87,8 +87,10 @@ body {
 
 .player-title {
   color: #f1f1f1;
-  margin: 0 0 10px 0;
-  font-size: 24px;
+  height: 42px;
+  line-height: 42px;
+  background-color: #464646;
+  font-size: 20px;
   font-weight: normal;
   line-height: auto;
   text-align: center;
@@ -111,27 +113,33 @@ body {
 
 .heading {
   color: #4b4e53;
-  margin: 40px 0;
+  margin: 0 0 40px 0;
   font-size: 19px;
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
 }
 
-.guidelines-section {
+.sub-section {
   width: 640px;
-  margin: 24px auto;
+  margin: 50px auto;
+  padding: 0.1px; /* Disable margin collapse */
 }
 
-.guidelines-msg {
+.section-msg {
   color: #696969;
-  font-size: 15px;
   margin: 0 0 32px 0;
+  font-size: 15px;
 }
 
-.guidelines-msg strong {
+.section-msg strong {
   color: #4b4e53;
   font-weight: bold;
+}
+
+.customize-section {
+  overflow: hidden;
+  background-color: #fff;
 }
 
 .form-label {
@@ -148,8 +156,8 @@ body {
   font-size: 13px;
   white-space: pre;
   resize: vertical;
-  background-color: #fcfcfc;
-  box-shadow: 2px 2px 0 0 rgba(224, 224, 224, 0.5);
+  background-color: #f9f9f9;
+  box-shadow: 2px 2px 0 0 rgba(0, 148, 189, 0.4);
 }
 
 textarea.form-input {
@@ -203,6 +211,7 @@ textarea.form-input {
 }
 
 .not-hosted-notice {
+  margin: 0 0 40px 0;
   padding: 10px;
   background-color: #dedede;
 }
