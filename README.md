@@ -4,7 +4,7 @@
 
 ## Important
 
-** You'll need Node v4.0 or higher to run this program.**
+**You'll need Node v4.0 or higher to run this program.**
 
 We recommend running with the latest version of [Node.js](https://nodejs.org). You can easily switch to and from newer Node versions with [n (Node version manager)](https://github.com/tj/n).
 
