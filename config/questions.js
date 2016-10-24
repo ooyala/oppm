@@ -76,7 +76,7 @@ exports.wizardQuestions = (version) => {
       type: 'input',
       name: 'outputPath',
       message: 'Enter a destination folder path for the .zip package:',
-      default: path.join(process.cwd(), 'dist'), // TODO - Remove dist when released
+      default: process.cwd(),
       filter: outputPath => path.normalize(outputPath)
     }
   ];
