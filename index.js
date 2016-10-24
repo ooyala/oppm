@@ -161,7 +161,7 @@ const runPackageManager = (params, buildType, options) => {
  */
 const displayHelp = () => {
   console.log(chalk.cyan(`Ooyala Player Package Manager v${packageJson.version}\n`));
-  console.log('Usage: opm [options]\n');
+  console.log('Usage: oppm [options]\n');
   console.log('Options:\n');
   console.log('  -v, --version\t\tTarget a specific player version');
   console.log('\t\t\t(Use full version number or \'latest\')');
