@@ -62,6 +62,7 @@ exports.wizardQuestions = (version) => {
       ],
       default: 1
     },
+    /*
     {
       type: 'list',
       name: 'bundle',
@@ -72,6 +73,7 @@ exports.wizardQuestions = (version) => {
       ],
       default: 1
     },
+    */
     {
       type: 'input',
       name: 'outputPath',
