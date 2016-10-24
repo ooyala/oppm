@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 'use strict';
 
 const packageJson = require('./package.json');
@@ -144,7 +145,7 @@ const runPackageManager = (params, buildType, options) => {
       return samplePage.create(packageSourcePath, 'sample.htm', resources, pageOptions);
     })
     .then(() =>
-      copyFile(path.join('templates', 'run_sample.js'), path.join(packageSourcePath, 'run_sample.js'))
+      copyFile(path.join(config.PROJECT_PATH, 'templates', 'run_sample.js'), path.join(packageSourcePath, 'run_sample.js'))
     )
     .then(() =>
       packageManager.createPackageArchive(packageSourcePath, options.outputPath, `Player_V${params.version}`)
