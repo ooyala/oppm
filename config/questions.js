@@ -62,6 +62,7 @@ exports.wizardQuestions = (version) => {
       ],
       default: 1
     },
+    /*
     {
       type: 'list',
       name: 'bundle',
@@ -72,11 +73,12 @@ exports.wizardQuestions = (version) => {
       ],
       default: 1
     },
+    */
     {
       type: 'input',
       name: 'outputPath',
       message: 'Enter a destination folder path for the .zip package:',
-      default: path.join(process.cwd(), 'dist'), // TODO - Remove dist when released
+      default: process.cwd(),
       filter: outputPath => path.normalize(outputPath)
     }
   ];

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 'use strict';
 
 const packageJson = require('./package.json');
@@ -21,16 +23,32 @@ const BUILD_TYPES = require('./lib/const/build_types');
 
 /**
  * Parses all the command line arguments and assigns default values.
- * @return {object} An object with all of the sanitized arguments
+ * @return {object} An object with all of the sanitized arguments. Returns null when an invalid parameter is passed.
  */
 const getParameters = () => {
+  let unknownParamsPassed = false;
   const options = {
     default: {
       version: 'latest',
-      candidate: false
+      candidate: false,
+      help: false
+    },
+    alias: {
+      version: 'v',
+      candidate: 'c',
+      help: 'h'
+    },
+    boolean: [
+      'candidate',
+      'help'
+    ],
+    unknown: () => {
+      unknownParamsPassed = true;
+      return false;
     }
   };
-  return parseArgs(process.argv.slice(2), options);
+  const params = parseArgs(process.argv.slice(2), options);
+  return unknownParamsPassed ? null : params;
 };
 
 /**
@@ -38,9 +56,14 @@ const getParameters = () => {
  */
 const app = () => {
   const params = getParameters();
+  // Show help if unkown parameter was received or --help was passed
+  if (!params || params.help) {
+    displayHelp();
+    return;
+  }
   const buildType = params.candidate ? BUILD_TYPES.CANDIDATE : BUILD_TYPES.STABLE;
 
-  console.log(chalk.cyan(`Ooyala Package Manager v${packageJson.version}`));
+  console.log(chalk.cyan(`Ooyala Player Package Manager v${packageJson.version}`));
   const spinner = new Spinner('%s Fetching version information...');
   spinner.start();
 
@@ -61,6 +84,7 @@ const app = () => {
   })
   .then(answers => runPackageManager(params, buildType, answers))
   .catch((error) => {
+    spinner.stop(true);
     console.log(chalk.red(error.message));
   });
 };
@@ -121,7 +145,7 @@ const runPackageManager = (params, buildType, options) => {
       return samplePage.create(packageSourcePath, 'sample.htm', resources, pageOptions);
     })
     .then(() =>
-      copyFile(path.join('templates', 'run_sample.js'), path.join(packageSourcePath, 'run_sample.js'))
+      copyFile(path.join(config.PROJECT_PATH, 'templates', 'run_sample.js'), path.join(packageSourcePath, 'run_sample.js'))
     )
     .then(() =>
       packageManager.createPackageArchive(packageSourcePath, options.outputPath, `Player_V${params.version}`)
@@ -132,6 +156,21 @@ const runPackageManager = (params, buildType, options) => {
     })
     .catch(error => reject(error));
   });
+};
+
+/**
+ * Displays a help screen with all the available CLI options.
+ */
+const displayHelp = () => {
+  console.log(chalk.cyan(`Ooyala Player Package Manager v${packageJson.version}\n`));
+  console.log('Usage: oppm [options]\n');
+  console.log('Options:\n');
+  console.log('  -v, --version\t\tTarget a specific player version');
+  console.log('\t\t\t(Use full version number or \'latest\')');
+  console.log('  -c, --candidate\tTarget candidate releases');
+  console.log('\t\t\t(For testing purposes only)');
+  console.log('  -h, --help\t\tDisplays this help screen');
+  console.log(chalk.white('\nDocumentation can be found at:', chalk.blue('https://github.com/ooyala/oppm')));
 };
 
 app();

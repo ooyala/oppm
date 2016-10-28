@@ -1,8 +1,8 @@
 
-var DEFAULT_EMBED_CODE = 'l1MzhtNTE6eOf81reieCvXoynnA7TUdp';
+var DEFAULT_EMBED_CODE = 'I3dXhnazoidu1V58G8iOorCCdDZwqlaZ';
 var DEFAULT_PLAYER_OPTIONS = {
-  'pcode': '9odGgyOhmvtSyMbOojUa85Ug4if_',
-  'playerBrandingId': 'e4c115a4f4e74866817e1c7fa60dfc39',
+  'pcode': 'Z5Mm06XeZlcDlfU_1R9v_L2KwYG6',
+  'playerBrandingId': 'dcb79e2098c94889a1b9f2af6280b45d',
   'autoplay': false,
   'debug': true,
   'platform': 'html5',
@@ -35,6 +35,10 @@ function initializeUI() {
 
   _applyParamsBtn.addEventListener('mouseup', function() {
     _applyingParams = false;
+  });
+
+  _embedCodeInput.addEventListener('click', function() {
+    this.setSelectionRange(0, this.value.length);
   });
 
   _playerOptionsInput.addEventListener('blur', function() {
