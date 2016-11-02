@@ -6,7 +6,7 @@ html(lang="en")
     link(href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet")
     //- If package is bundled include only bundle script, otherwise load all stylesheets
     if isBundle
-      script(type="text/javascript" src="bundle.js")
+      script(src="bundle.js")
     else
       each styleSheetUrl in styleSheets
         link(rel="stylesheet" href=styleSheetUrl)
@@ -56,7 +56,7 @@ html(lang="en")
         pre.prettyprint
           - var html = ''
           each styleSheetUrl in styleSheets
-            - html = html + '<link href="' + styleSheetUrl + '"/>\n'
+            - html = html + '<link rel="stylesheet" href="' + styleSheetUrl + '"/>\n'
           = html
 
       .section-msg
