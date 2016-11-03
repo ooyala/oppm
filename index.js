@@ -124,13 +124,14 @@ const runPackageManager = (params, buildType, options) => {
       }
       return packageManager.generateManifest(mainBuildPath, config.MANIFEST_FILE, resources);
     })
-    .then(() => {
+    .then((bundledFiles) => {
       if (!options.bundle) {
         return Promise.resolve();
       }
       const entry = { path: mainBuildPath, fileName: config.MANIFEST_FILE };
       const output = { path: bundleBuildPath, fileName: 'bundle.js' };
-      return packageManager.bundleResources(entry, output);
+      const bundlingOptions = { excludeFromCopy: bundledFiles };
+      return packageManager.bundleResources(entry, output, bundlingOptions);
     })
     .then(() => {
       const pageOptions = {

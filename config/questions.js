@@ -21,12 +21,12 @@ exports.wizardQuestions = (version) => {
       name: 'ad',
       message: 'What Advertising Platform(s) do you want to utilize?',
       choices: [
-        { name: 'VAST/VPAID 2.0', value: 'ad-manager-vast' },
+        { name: 'VAST 2.0 & 3.0 / VPAID 2.0 / VMAP 1.0', value: 'ad-manager-vast' },
         { name: 'Pulse', value: 'pulse' },
         { name: 'Pulse SSAI', value: 'ssai-pulse' },
-        { name: 'Google IMA', value: 'google-ima' },
-        { name: 'Free Wheel', value: 'freewheel' },
-        { name: 'Live Rail', value: 'liverail' }
+        { name: 'Google IMA (Ad Rules / VAST 2.0 & 3.0 / VPAID 1.0 & 2.0)', value: 'google-ima' },
+        { name: 'FreeWheel', value: 'freewheel' },
+        { name: 'LiveRail', value: 'liverail' }
       ]
     },
     {
@@ -62,7 +62,6 @@ exports.wizardQuestions = (version) => {
       ],
       default: 1
     },
-    /*
     {
       type: 'list',
       name: 'bundle',
@@ -71,14 +70,14 @@ exports.wizardQuestions = (version) => {
         { name: 'YES - Bundle as many files as possible.', short: 'Yes', value: true },
         { name: 'NO - Keep files separate.', short: 'No', value: false }
       ],
-      default: 1
+      default: 0
     },
-    */
     {
       type: 'input',
       name: 'outputPath',
       message: 'Enter a destination folder path for the .zip package:',
-      default: process.cwd(),
+      // default: process.cwd(),
+      default: path.join(process.cwd(), 'dist'), // TODO - Remove, only for dev
       filter: outputPath => path.normalize(outputPath)
     }
   ];

@@ -107,9 +107,7 @@ html(lang="en")
 
     //- If skin was included, use it, otherwise use fallback url
     if skinIncluded
-      //- Bundles will already have this variable set to the actual json contents
-      if !isBundle
-        script window.ooSkinJson = 'skin-plugin/skin.json';
+      script window.ooSkinJson = 'skin-plugin/skin.json';
     else
       script window.ooSkinJson = '#{skinFallbackUrls.json}';
 

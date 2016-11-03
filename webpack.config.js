@@ -1,10 +1,11 @@
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
-module.exports = (entry, output) => {
+module.exports = (entry, output, options) => {
   return {
     entry: [
-      `./${entry.path}/${entry.fileName}`
+      path.join(entry.path, entry.fileName)
     ],
     output: {
       path: output.path,
@@ -14,8 +15,18 @@ module.exports = (entry, output) => {
     plugins: [
       new webpack.DefinePlugin({
         PRODUCTION: JSON.stringify(true)
+      }),
+      new CopyWebpackPlugin([
+        {
+          from: entry.path
+        }
+      ], {
+        ignore: [].concat.apply([], [options.excludeFromCopy, entry.fileName])
       })
     ],
+    resolveLoader: {
+      root: path.join(__dirname, 'node_modules')
+    },
     module: {
       loaders: [
         {
@@ -29,11 +40,7 @@ module.exports = (entry, output) => {
         {
           test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg|json)(\?.*$|$)/,
           loader: `url-loader?context=${entry.path}&name=[path][name].[ext]&emitFile=true&limit=32000`
-        }/*,
-        {
-          test: /\.json$/,
-          loader: "json-loader"
-        }*/
+        }
       ]
     }
   };
