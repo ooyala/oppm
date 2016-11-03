@@ -4,12 +4,10 @@ html(lang="en")
     title="Ooyala Package Manager Sample Page"
     link(rel="shortcut icon" href="http://www.ooyala.com/sites/ooyala.com/files/favicon.png" type="image/png")
     link(href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet")
-    //- If package is bundled include only bundle script, otherwise load all stylesheets
-    if isBundle
-      script(src="bundle.js")
-    else
-      each styleSheetUrl in styleSheets
-        link(rel="stylesheet" href=styleSheetUrl)
+    each scriptUrl in scripts
+      script(src=scriptUrl)
+    each styleSheetUrl in styleSheets
+      link(rel="stylesheet" href=styleSheetUrl)
     //- If skin wasn't included use fallback css
     if !skinIncluded
       link(rel="stylesheet", href=skinFallbackUrls.css)
@@ -100,10 +98,6 @@ html(lang="en")
     #error-notification.notification.error
 
     script(src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js")
-    //- Add all script files if build is not bundled
-    if !isBundle
-      each scriptUrl in scripts
-        script(type="text/javascript" src=scriptUrl)
 
     //- If skin was included, use it, otherwise use fallback url
     if skinIncluded

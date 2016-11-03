@@ -21,7 +21,7 @@ module.exports = (entry, output, options) => {
           from: entry.path
         }
       ], {
-        ignore: [].concat.apply([], [options.excludeFromCopy, entry.fileName])
+        ignore: options.excludeFromCopy.concat(entry.fileName)
       })
     ],
     resolveLoader: {

@@ -124,16 +124,15 @@ const runPackageManager = (params, buildType, options) => {
       }
       return packageManager.generateManifest(mainBuildPath, config.MANIFEST_FILE, resources);
     })
-    .then((bundledFiles) => {
+    .then((bundleManifest) => {
       if (!options.bundle) {
         return Promise.resolve();
       }
       const entry = { path: mainBuildPath, fileName: config.MANIFEST_FILE };
-      const output = { path: bundleBuildPath, fileName: 'bundle.js' };
-      const bundlingOptions = { excludeFromCopy: bundledFiles };
-      return packageManager.bundleResources(entry, output, bundlingOptions);
+      const output = { path: bundleBuildPath, fileName: config.BUNDLE_FILE };
+      return packageManager.bundleResources(entry, output, bundleManifest);
     })
-    .then(() => {
+    .then((bundledResources) => {
       const pageOptions = {
         version: params.version,
         isBundle: options.bundle,
@@ -143,7 +142,7 @@ const runPackageManager = (params, buildType, options) => {
           json: `${config.RESOURCE_ROOT}/${buildType}/${params.version}/skin-plugin/skin.json`
         }
       };
-      return samplePage.create(packageSourcePath, 'sample.htm', resources, pageOptions);
+      return samplePage.create(packageSourcePath, 'sample.htm', (bundledResources || resources), pageOptions);
     })
     .then(() =>
       copyFile(path.join(config.PROJECT_PATH, 'templates', 'run_sample.js'), path.join(packageSourcePath, 'run_sample.js'))

@@ -7,5 +7,6 @@ module.exports = {
   BUILD_PATH: path.join(os.tmpdir(), 'oppm'),
   VERSION_CHECK_ASSET: 'core.min.js',
   VERSION_FILE: 'version.txt',
-  MANIFEST_FILE: 'manifest.js'
+  MANIFEST_FILE: 'manifest.js',
+  BUNDLE_FILE: 'player_bundle.js'
 };
