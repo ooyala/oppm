@@ -1,5 +1,6 @@
 const semver = require('semver');
 const path = require('path');
+const untildify = require('untildify');
 
 exports.wizardQuestions = (version) => {
   const questions = [
@@ -78,7 +79,7 @@ exports.wizardQuestions = (version) => {
       message: 'Enter a destination folder path for the .zip package:',
       // default: process.cwd(),
       default: path.join(process.cwd(), 'dist'), // TODO - Remove, only for dev
-      filter: outputPath => path.normalize(outputPath)
+      filter: outputPath => untildify(path.normalize(outputPath))
     }
   ];
 
