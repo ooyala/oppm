@@ -45,6 +45,7 @@ module.exports = {
       name: 'Akamai HD Flash',
       path: BASE_PLUGIN_PATH,
       fileName: 'akamaiHD_flash.min.js',
+      bundleableV4Version: 'none',
       dependencies: [
         {
           path: BASE_PLUGIN_PATH,
@@ -57,6 +58,7 @@ module.exports = {
       name: 'OSMF Flash',
       path: BASE_PLUGIN_PATH,
       fileName: 'osmf_flash.min.js',
+      bundleableV4Version: 'none',
       dependencies: [
         {
           path: BASE_PLUGIN_PATH,

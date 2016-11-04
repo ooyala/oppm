@@ -122,7 +122,7 @@ const runPackageManager = (params, buildType, options) => {
       if (!options.bundle) {
         return Promise.resolve();
       }
-      return packageManager.generateManifest(mainBuildPath, config.MANIFEST_FILE, resources);
+      return packageManager.generateManifest(mainBuildPath, config.MANIFEST_FILE, params.version, resources);
     })
     .then((bundleManifest) => {
       if (!options.bundle) {
