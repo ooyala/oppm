@@ -2,8 +2,9 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
-module.exports = (entryPath, output, options) => {
+module.exports = (context, output, options) => {
   return {
+    context: context,
     entry: options.entry,
     output: {
       path: output.path,
@@ -18,7 +19,7 @@ module.exports = (entryPath, output, options) => {
       }),
       new CopyWebpackPlugin([
         {
-          from: entryPath
+          from: context
         }
       ], {
         ignore: options.copyIgnore
@@ -31,15 +32,15 @@ module.exports = (entryPath, output, options) => {
       loaders: [
         {
           test: /^.+\.min\.js$/,
-          loader: "script-loader"
+          loader: 'script-loader'
         },
         {
           test: /\.css$/,
-          loader: "style-loader!css-loader"
+          loader: 'style-loader!css-loader'
         },
         {
           test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg|json)(\?.*$|$)/,
-          loader: `url-loader?context=${entryPath}&name=[path][name].[ext]&emitFile=true&limit=32000`
+          loader: 'url-loader?name=[path][name].[ext]&emitFile=false&limit=0'
         }
       ]
     }
