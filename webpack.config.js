@@ -2,26 +2,26 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
-module.exports = (entry, output, options) => {
+module.exports = (entryPath, output, options) => {
   return {
-    entry: [
-      path.join(entry.path, entry.fileName)
-    ],
+    entry: options.entry,
     output: {
       path: output.path,
       filename: output.fileName,
       target: 'web'
     },
     plugins: [
-      new webpack.DefinePlugin({
-        PRODUCTION: JSON.stringify(true)
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false
+        }
       }),
       new CopyWebpackPlugin([
         {
-          from: entry.path
+          from: entryPath
         }
       ], {
-        ignore: options.excludeFromCopy.concat(entry.fileName)
+        ignore: options.copyIgnore
       })
     ],
     resolveLoader: {
@@ -39,7 +39,7 @@ module.exports = (entry, output, options) => {
         },
         {
           test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg|json)(\?.*$|$)/,
-          loader: `url-loader?context=${entry.path}&name=[path][name].[ext]&emitFile=true&limit=32000`
+          loader: `url-loader?context=${entryPath}&name=[path][name].[ext]&emitFile=true&limit=32000`
         }
       ]
     }

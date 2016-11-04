@@ -122,15 +122,9 @@ const runPackageManager = (params, buildType, options) => {
       if (!options.bundle) {
         return Promise.resolve();
       }
-      return packageManager.generateManifest(mainBuildPath, config.MANIFEST_FILE, params.version, resources);
-    })
-    .then((bundleManifest) => {
-      if (!options.bundle) {
-        return Promise.resolve();
-      }
-      const entry = { path: mainBuildPath, fileName: config.MANIFEST_FILE };
       const output = { path: bundleBuildPath, fileName: config.BUNDLE_FILE };
-      return packageManager.bundleResources(entry, output, bundleManifest);
+      const bundleManifest = packageManager.generateManifest(params.version, resources);
+      return packageManager.bundleResources(mainBuildPath, output, bundleManifest);
     })
     .then((bundledResources) => {
       const pageOptions = {
