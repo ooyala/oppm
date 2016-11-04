@@ -102,6 +102,7 @@ const runPackageManager = (params, buildType, options) => {
   const packageSourcePath = options.bundle ? bundleBuildPath : mainBuildPath;
 
   return new Promise((resolve, reject) => {
+    const spinner = new Spinner();
     // Determine whether skin.json was amongst the chosen options
     const skinIncluded = (options.skin || []).some(pluginId => pluginId === 'skin-json');
     // Filter plugin assets and obtain a list all required files and dependencies
@@ -119,6 +120,9 @@ const runPackageManager = (params, buildType, options) => {
       return pluginUtils.relativizeSkinJsonUrls(skinJsonFilePath, skinJson.dependencies);
     })
     .then(() => {
+      spinner.setSpinnerTitle('%s Building package. Please wait...');
+      spinner.start();
+
       if (!options.bundle) {
         return Promise.resolve();
       }
@@ -145,10 +149,14 @@ const runPackageManager = (params, buildType, options) => {
       packageManager.createPackageArchive(packageSourcePath, options.outputPath, `Player_V${params.version}`)
     )
     .then((pkg) => {
+      spinner.stop(true);
       console.log(chalk.green('Package', chalk.bold(pkg.fileName), 'created at', chalk.bold(pkg.path)));
       resolve(pkg);
     })
-    .catch(error => reject(error));
+    .catch(error => {
+      spinner.stop(true);
+      reject(error);
+    });
   });
 };
 
