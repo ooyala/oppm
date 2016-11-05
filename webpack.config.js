@@ -8,10 +8,11 @@ module.exports = (context, output, options) => {
     entry: options.entry,
     output: {
       path: output.path,
-      filename: output.fileName,
+      filename: `[hash].${output.fileName}`,
       target: 'web'
     },
     plugins: [
+      new webpack.optimize.DedupePlugin(),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           warnings: false
@@ -40,7 +41,8 @@ module.exports = (context, output, options) => {
         },
         {
           test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg|json)(\?.*$|$)/,
-          loader: 'url-loader?name=[path][name].[ext]&emitFile=false&limit=0'
+          loader: 'file-loader?name=[path][name].[ext]&emitFile=false'
+          //loader: 'url-loader?name=[path][name].[ext]&emitFile=false&limit=3200'
         }
       ]
     }
