@@ -153,7 +153,7 @@ const runPackageManager = (params, buildType, options) => {
       console.log(chalk.green('Package', chalk.bold(pkg.fileName), 'created at', chalk.bold(pkg.path)));
       resolve(pkg);
     })
-    .catch(error => {
+    .catch((error) => {
       spinner.stop(true);
       reject(error);
     });

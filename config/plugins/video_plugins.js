@@ -22,20 +22,30 @@ module.exports = {
         },
         {
           path: BASE_PLUGIN_PATH,
-          fileName: 'bitdashplayer.min.css'
+          bundlePath: '',
+          fileName: 'bitdashplayer.min.css',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
         },
         {
           path: BASE_PLUGIN_PATH,
+          bundlePath: '',
           fileName: 'bitdash-controls.min.js',
-          v4Version: '>=4.6.3'
+          v4Version: '>=4.6.3',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
         },
         {
           path: BASE_PLUGIN_PATH,
+          bundlePath: '',
           fileName: 'bitdash-controls.min.css',
-          v4Version: '>=4.6.3'
+          v4Version: '>=4.6.3',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
         },
         {
           path: BASE_PLUGIN_PATH,
+          bundlePath: '',
           fileName: 'bitdashplayer.swf'
         }
       ]

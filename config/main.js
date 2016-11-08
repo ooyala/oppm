@@ -1,5 +1,5 @@
 const path = require('path');
-const utils =  require('../lib/utils');
+const utils = require('../lib/utils');
 
 module.exports = {
   RESOURCE_ROOT: 'http://player.ooyala.com/static/v4',

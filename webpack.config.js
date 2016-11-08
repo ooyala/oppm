@@ -18,13 +18,7 @@ module.exports = (context, output, options) => {
           warnings: false
         }
       }),
-      new CopyWebpackPlugin([
-        {
-          from: context
-        }
-      ], {
-        ignore: options.copyIgnore
-      })
+      new CopyWebpackPlugin(options.copy.patterns, options.copy.options)
     ],
     resolveLoader: {
       root: path.join(__dirname, 'node_modules')
@@ -37,10 +31,10 @@ module.exports = (context, output, options) => {
         },
         {
           test: /\.css$/,
-          loader: 'style-loader!css-loader'
+          loader: 'style-loader?insertAt=top!css-loader'
         },
         {
-          test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg|json)(\?.*$|$)/,
+          test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg)(\?.*$|$)/,
           loader: 'file-loader?name=[path][name].[ext]&emitFile=false'
           //loader: 'url-loader?name=[path][name].[ext]&emitFile=false&limit=3200'
         }
