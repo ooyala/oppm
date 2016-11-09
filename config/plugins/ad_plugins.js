@@ -25,13 +25,6 @@ module.exports = {
       dependencies: []
     },
     {
-      id: 'liverail',
-      name: 'LiveRail',
-      path: BASE_PLUGIN_PATH,
-      fileName: 'liverail.min.js',
-      dependencies: []
-    },
-    {
       id: 'pulse',
       name: 'Pulse',
       path: BASE_PLUGIN_PATH,

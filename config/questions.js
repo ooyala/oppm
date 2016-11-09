@@ -26,8 +26,7 @@ exports.wizardQuestions = (version) => {
         { name: 'Pulse', value: 'pulse' },
         { name: 'Pulse SSAI', value: 'ssai-pulse' },
         { name: 'Google IMA (Ad Rules / VAST 2.0 & 3.0 / VPAID 1.0 & 2.0)', value: 'google-ima' },
-        { name: 'FreeWheel', value: 'freewheel' },
-        { name: 'LiveRail', value: 'liverail' }
+        { name: 'FreeWheel', value: 'freewheel' }
       ]
     },
     {
