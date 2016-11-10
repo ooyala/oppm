@@ -26,7 +26,8 @@ module.exports = (context, output, options) => {
     module: {
       loaders: [
         {
-          test: /^.+\.min\.js$/,
+          test: /\.(min\.js|js)$/,
+          exclude: /css-base\.js$/,
           loader: 'script-loader'
         },
         {
