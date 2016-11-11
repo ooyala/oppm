@@ -31,6 +31,7 @@
     "escape-string-regexp": "^1.0.5",
     "fs-extra": "^1.0.0",
     "inquirer": "^1.2.1",
+    "md5-file": "^3.1.1",
     "minimist": "^1.2.0",
     "pug": "^2.0.0-beta6",
     "request": "^2.75.0",
