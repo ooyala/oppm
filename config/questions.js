@@ -13,14 +13,15 @@ exports.wizardQuestions = (version) => {
         { name: 'HLS', value: 'bit-wrapper' },
         { name: 'DASH', value: 'bit-wrapper' },
         { name: 'HDS', value: 'osmf-flash' },
-        { name: 'HDS (Akamai)', value: 'akamai-hd-flash' }
+        { name: 'HDS (Akamai)', value: 'akamai-hd-flash' },
+        { name: 'YouTube Videos', value: 'youtube', v4Version: '>=4.9.2' }
       ],
       validate: userInput => (userInput.length ? true : 'Please choose at least one format.')
     },
     {
       type: 'checkbox',
       name: 'ad',
-      message: 'What Advertising Platform(s) do you want to utilize?',
+      message: 'What Advertising Platform(s) do you want to use?',
       choices: [
         { name: 'VAST 2.0 & 3.0 / VPAID 2.0 / VMAP 1.0', value: 'ad-manager-vast' },
         { name: 'Pulse', value: 'pulse' },
@@ -65,9 +66,9 @@ exports.wizardQuestions = (version) => {
     {
       type: 'list',
       name: 'bundle',
-      message: 'Do you want to bundle scripts and styles into a single file?',
+      message: 'Do you want to bundle scripts into a single file?',
       choices: [
-        { name: 'YES - Bundle as many files as possible.', short: 'Yes', value: true },
+        { name: 'YES - Concatenate as many files as possible.', short: 'Yes', value: true },
         { name: 'NO - Keep files separate.', short: 'No', value: false }
       ],
       default: 0
@@ -76,8 +77,7 @@ exports.wizardQuestions = (version) => {
       type: 'input',
       name: 'outputPath',
       message: 'Enter a destination folder path for the .zip package:',
-      // default: process.cwd(),
-      default: path.join(process.cwd(), 'dist'), // TODO - Remove, only for dev
+      default: (process.env.NODE_ENV === 'production') ? process.cwd() : path.join(process.cwd(), 'dist'),
       filter: outputPath => untildify(path.normalize(outputPath))
     }
   ];

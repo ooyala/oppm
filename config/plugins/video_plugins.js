@@ -75,6 +75,14 @@ module.exports = {
           fileName: 'osmf_flash.swf'
         }
       ]
+    },
+    {
+      id: 'youtube',
+      name: 'YouTube',
+      path: BASE_PLUGIN_PATH,
+      fileName: 'youtube.min.js',
+      v4Version: '>=4.9.2',
+      dependencies: []
     }
   ]
 };
