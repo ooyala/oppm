@@ -47,6 +47,19 @@ cd path_to_unzipped_package_contents
 node run_sample.js
 ```
 
+#### Bundling scripts
+**oppm** can automatically concatenate some of the package's scripts into a single `player_bundle.js` file. To concatenate scripts, simply choose the `YES` option when prompted by the wizard.
+
+Bundling script files together can be useful if you want to reduce the number of requests to your server. If your package size is not too large (i.e. you don't require too many plugins), then bundling might provide a performance increase during page load. Bundling scripts on packages with a large number of plugins is not recommended.
+
+## Installation Troubleshooting
+
+#### npm issues with Homebrew on OS X
+Installing Node.js through Homebrew can cause problems with npm for globally installed packages such as **oppm**. Please refer to [this link](https://gist.github.com/DanHerbert/9520689) for a possible solution.
+
+#### Getting a **EACCES** error when installing
+This usually means that you do not have permission to write to the folders where npm installs packages. You can fix this issue by following [these steps](https://docs.npmjs.com/getting-started/fixing-npm-permissions).
+
 ## For Developers
 For initial project setup, simply run this inside the main project folder:
 ```
