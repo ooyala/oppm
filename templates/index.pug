@@ -65,6 +65,14 @@ html(lang="en")
           - html = html + '<script src="' + scriptUrl + '"></script>\n'
         = html
 
+      if iframeIncluded
+        .section-msg
+          strong Please note:&nbsp;
+          | Your package includes the HTML iframe, which requires additional setup. Please refer to the&nbsp;
+          a.link(href="http://help.ooyala.com/video-platform/reference/pbv4_embed_iframe.html", target="_blank")
+            | HTML iframe Documentation
+          | &nbsp;for additional guidelines.
+
       .section-msg
         | For detailed setup instructions, please refer to the&nbsp;
         a.link(href="http://help.ooyala.com/video-platform/concepts/pbv4_host.html", target="_blank")

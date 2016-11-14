@@ -154,6 +154,7 @@ const runPackageManager = (params, buildType, options) => {
         version: params.version,
         isBundle: options.bundle,
         skinIncluded,
+        iframeIncluded: (options.skin || []).some(pluginId => pluginId === 'html-iframe'),
         skinFallbackUrls: {
           css: `${config.RESOURCE_ROOT}/${buildType}/${params.version}/skin-plugin/html5-skin.min.css`,
           json: `${config.RESOURCE_ROOT}/${buildType}/${params.version}/skin-plugin/skin.json`
