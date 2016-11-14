@@ -10,7 +10,7 @@ exports.wizardQuestions = (version) => {
       message: 'What Streaming Formats do you want to support?',
       choices: [
         { name: 'MP4', value: 'main-html5', checked: true },
-        { name: 'HLS', value: 'bit-wrapper' },
+        { name: 'HLS', value: ['main-html5', 'bit-wrapper'] },
         { name: 'DASH', value: 'bit-wrapper' },
         { name: 'HDS', value: 'osmf-flash' },
         { name: 'HDS (Akamai)', value: 'akamai-hd-flash' },
@@ -52,6 +52,16 @@ exports.wizardQuestions = (version) => {
         { name: 'YES - Include the default skin in my package.', short: 'Yes', value: ['html5-skin', 'skin-json'] },
         { name: 'NO - I would like to use my own skin.', short: 'No', value: ['html5-skin'] }
       ]
+    },
+    {
+      type: 'list',
+      name: 'iframe',
+      message: 'Do you want to include the HTML iframe?',
+      choices: [
+        { name: 'YES - Include the iframe HTML file.', short: 'Yes', value: ['html-iframe'] },
+        { name: 'NO - Don\'t include the HTML iframe.', short: 'No', value: [] }
+      ],
+      default: 1
     },
     {
       type: 'list',
