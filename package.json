@@ -1,6 +1,6 @@
 {
   "name": "oppm",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Ooyala Player Package Manager",
   "preferGlobal": true,
   "bin": {
