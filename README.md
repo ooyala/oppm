@@ -2,6 +2,13 @@
 
 **Ooyala Player Package Manager** is a command-line interface geared towards Ooyala customers that are interested in self-hosting the V4 Player. The utility allows you to easily download all the necessary plugins and assets that will be needed for your particular V4 Player use case.
 
+#### Beta Disclaimer
+
+Please note that this is a beta version of the **Ooyala Player Package Manager** which is
+still undergoing final testing before its official release. The website, its software and all content found on it are provided on an "as is" and "as available" basis.
+
+Ooyala does not give any warranties, whether express or implied, as to the suitability or usability of the website, its software or any of its content.
+
 ## Important
 
 **You'll need Node v4.0 or higher to run this program.**

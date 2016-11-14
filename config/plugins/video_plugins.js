@@ -81,7 +81,7 @@ module.exports = {
       name: 'YouTube',
       path: BASE_PLUGIN_PATH,
       fileName: 'youtube.min.js',
-      v4Version: '>=4.9.2',
+      v4Version: 'none',
       dependencies: []
     }
   ]

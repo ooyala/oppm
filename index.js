@@ -57,7 +57,7 @@ const getParameters = () => {
 const app = () => {
   const params = getParameters();
   // Show help if unkown parameter was received or --help was passed
-  if (!params || params.help) {
+  if (!params || params.help || !params.version.length) {
     displayHelp();
     return;
   }
