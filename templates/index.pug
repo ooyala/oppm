@@ -45,6 +45,11 @@ html(lang="en")
       .heading
         | Player Setup Guidelines
 
+      .section-msg
+        | For the purpose of these guidelines, it is assumed that your HTML page
+        | is located at the root of the package's folder, and that the package's
+        | directory structure is maintained.
+
       if styleSheets.length
         .section-msg
           = 'Add these stylesheets to the '
@@ -58,7 +63,10 @@ html(lang="en")
           = html
 
       .section-msg
-        = 'Include the player core and plugin scripts before your embed code:'
+        = 'Include the player core and plugin scripts before your embed code (placing them inside the '
+        strong
+          = '<head>'
+        = ' tag is recommended):'
       pre.prettyprint
         - var html = ''
         each scriptUrl in scripts

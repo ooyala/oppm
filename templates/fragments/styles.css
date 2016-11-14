@@ -128,7 +128,8 @@ body {
 
 .section-msg {
   color: #696969;
-  margin: 0 0 32px 0;
+  line-height: 1.6em;
+  margin: 0 0 30px 0;
   font-size: 15px;
 }
 
