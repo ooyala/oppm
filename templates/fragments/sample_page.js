@@ -160,12 +160,24 @@ function showNotification(message) {
   }, 4000);
 }
 
+function onPlayerCreate(player) {
+  player.mb.subscribe('*', 'test', function(event, params) {
+    if (!event.match(/playheadTime/)) {
+      OO.log("Message Bus Event: " + event + " " + JSON.stringify(arguments));
+    }
+  });
+}
+
 window.addEventListener('load', function() {
   var params = getInitialParams();
 
   initializeUI();
   updateFormWithParams(params);
   updateQSWithParams(params);
+
+  if (!params.options.onCreate) {
+    params.options.onCreate = onPlayerCreate;
+  }
 
   OO.ready(function() {
     window.pp = OO.Player.create('ooplayer', params.ec, params.options);

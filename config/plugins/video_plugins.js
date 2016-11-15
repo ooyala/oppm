@@ -22,20 +22,30 @@ module.exports = {
         },
         {
           path: BASE_PLUGIN_PATH,
-          fileName: 'bitdashplayer.min.css'
+          bundlePath: '',
+          fileName: 'bitdashplayer.min.css',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
         },
         {
           path: BASE_PLUGIN_PATH,
+          bundlePath: '',
           fileName: 'bitdash-controls.min.js',
-          v4Version: '>=4.6.3'
+          v4Version: '>=4.6.3',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
         },
         {
           path: BASE_PLUGIN_PATH,
+          bundlePath: '',
           fileName: 'bitdash-controls.min.css',
-          v4Version: '>=4.6.3'
+          v4Version: '>=4.6.3',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
         },
         {
           path: BASE_PLUGIN_PATH,
+          bundlePath: '',
           fileName: 'bitdashplayer.swf'
         }
       ]
@@ -45,6 +55,7 @@ module.exports = {
       name: 'Akamai HD Flash',
       path: BASE_PLUGIN_PATH,
       fileName: 'akamaiHD_flash.min.js',
+      bundleableV4Version: 'none',
       dependencies: [
         {
           path: BASE_PLUGIN_PATH,
@@ -57,12 +68,21 @@ module.exports = {
       name: 'OSMF Flash',
       path: BASE_PLUGIN_PATH,
       fileName: 'osmf_flash.min.js',
+      bundleableV4Version: 'none',
       dependencies: [
         {
           path: BASE_PLUGIN_PATH,
           fileName: 'osmf_flash.swf'
         }
       ]
+    },
+    {
+      id: 'youtube',
+      name: 'YouTube',
+      path: BASE_PLUGIN_PATH,
+      fileName: 'youtube.min.js',
+      v4Version: 'none',
+      dependencies: []
     }
   ]
 };

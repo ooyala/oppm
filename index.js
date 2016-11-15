@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env NODE_ENV=production node
 
 'use strict';
 
@@ -15,6 +15,7 @@ const resourceManager = require('./lib/resource_manager');
 const packageManager = require('./lib/package_manager');
 const pluginUtils = require('./lib/plugin_utils');
 const samplePage = require('./lib/sample_page');
+const utils = require('./lib/utils');
 const inquirer = require('inquirer');
 const Spinner = require('cli-spinner').Spinner;
 const chalk = require('chalk');
@@ -52,12 +53,30 @@ const getParameters = () => {
 };
 
 /**
+ * Performs some additional processing on the answers object returned by inquirer.
+ * The object returned can be used as an options parameter for the <tt>runPackageManager</tt> function.
+ * @param {object} inquirerAnswers The answers object returned by the inquirer prompt
+ * @return {object} An options object that has the format required by <tt>runPackageManager</tt>
+ */
+const extractPackageOptions = (inquirerAnswers) => {
+  const packageOptions = Object.assign({}, inquirerAnswers);
+  // There's a special case in which we need to include main_html5 along with bit_wrapper when
+  // HLS is chosen (in order to support mobile). Inquirer doesn't support this out of the box
+  packageOptions.video = utils.flattenArray(packageOptions.video);
+  // Skin and iframe belong to the same plugin group, but depend on different questions.
+  // We need to merge both answers into a single skin group
+  packageOptions.skin = utils.mergeDedupeArray(packageOptions.skin, packageOptions.iframe);
+  delete packageOptions.iframe;
+  return packageOptions;
+};
+
+/**
  * Main entry point of the application.
  */
 const app = () => {
   const params = getParameters();
   // Show help if unkown parameter was received or --help was passed
-  if (!params || params.help) {
+  if (!params || params.help || !params.version.length) {
     displayHelp();
     return;
   }
@@ -82,7 +101,7 @@ const app = () => {
     console.log(chalk.white(`Player V4 Version: ${params.version} (${buildType})`));
     return inquirer.prompt(wizardQuestions(params.version));
   })
-  .then(answers => runPackageManager(params, buildType, answers))
+  .then(answers => runPackageManager(params, buildType, extractPackageOptions(answers)))
   .catch((error) => {
     spinner.stop(true);
     console.log(chalk.red(error.message));
@@ -102,6 +121,7 @@ const runPackageManager = (params, buildType, options) => {
   const packageSourcePath = options.bundle ? bundleBuildPath : mainBuildPath;
 
   return new Promise((resolve, reject) => {
+    const spinner = new Spinner();
     // Determine whether skin.json was amongst the chosen options
     const skinIncluded = (options.skin || []).some(pluginId => pluginId === 'skin-json');
     // Filter plugin assets and obtain a list all required files and dependencies
@@ -119,30 +139,28 @@ const runPackageManager = (params, buildType, options) => {
       return pluginUtils.relativizeSkinJsonUrls(skinJsonFilePath, skinJson.dependencies);
     })
     .then(() => {
+      spinner.setSpinnerTitle('%s Building package. Please wait...');
+      spinner.start();
+
       if (!options.bundle) {
         return Promise.resolve();
       }
-      return packageManager.generateManifest(mainBuildPath, config.MANIFEST_FILE, resources);
+      const output = { path: bundleBuildPath, fileName: config.BUNDLE_FILE };
+      const bundleManifest = packageManager.generateManifest(params.version, resources);
+      return packageManager.bundleResources(mainBuildPath, output, bundleManifest);
     })
-    .then(() => {
-      if (!options.bundle) {
-        return Promise.resolve();
-      }
-      const entry = { path: mainBuildPath, fileName: config.MANIFEST_FILE };
-      const output = { path: bundleBuildPath, fileName: 'bundle.js' };
-      return packageManager.bundleResources(entry, output);
-    })
-    .then(() => {
+    .then((bundledResources) => {
       const pageOptions = {
         version: params.version,
         isBundle: options.bundle,
         skinIncluded,
+        iframeIncluded: (options.skin || []).some(pluginId => pluginId === 'html-iframe'),
         skinFallbackUrls: {
           css: `${config.RESOURCE_ROOT}/${buildType}/${params.version}/skin-plugin/html5-skin.min.css`,
           json: `${config.RESOURCE_ROOT}/${buildType}/${params.version}/skin-plugin/skin.json`
         }
       };
-      return samplePage.create(packageSourcePath, 'sample.htm', resources, pageOptions);
+      return samplePage.create(packageSourcePath, 'sample.htm', (bundledResources || resources), pageOptions);
     })
     .then(() =>
       copyFile(path.join(config.PROJECT_PATH, 'templates', 'run_sample.js'), path.join(packageSourcePath, 'run_sample.js'))
@@ -151,10 +169,14 @@ const runPackageManager = (params, buildType, options) => {
       packageManager.createPackageArchive(packageSourcePath, options.outputPath, `Player_V${params.version}`)
     )
     .then((pkg) => {
+      spinner.stop(true);
       console.log(chalk.green('Package', chalk.bold(pkg.fileName), 'created at', chalk.bold(pkg.path)));
       resolve(pkg);
     })
-    .catch(error => reject(error));
+    .catch((error) => {
+      spinner.stop(true);
+      reject(error);
+    });
   });
 };
 

@@ -90,7 +90,7 @@ body {
   height: 42px;
   line-height: 42px;
   background-color: #464646;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: normal;
   line-height: auto;
   text-align: center;
@@ -128,7 +128,8 @@ body {
 
 .section-msg {
   color: #696969;
-  margin: 0 0 32px 0;
+  line-height: 1.6em;
+  margin: 0 0 30px 0;
   font-size: 15px;
 }
 

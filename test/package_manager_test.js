@@ -4,7 +4,8 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const expect = chai.expect;
 const mockFs = require('mock-fs');
-const fs = require('fs');
+const fs = require('./test_utils').patchMockFs(require('fs-extra'));
+const path = require('path');
 const packageManager = require('../lib/package_manager');
 
 describe('PackageManager', () => {
@@ -24,7 +25,7 @@ describe('PackageManager', () => {
 
   describe('createPackageArchive', () => {
 
-    /*it('compress source directory into a single .zip file', () => {
+    it('compress source directory into a single .zip file', () => {
       mockFs({
         sourcePath: {
           file1: 'data1',
@@ -34,9 +35,9 @@ describe('PackageManager', () => {
       });
       return packageManager.createPackageArchive('sourcePath', 'destPath', 'archiveName')
       .then(() => {
-        fs.statSync('archiveName.zip');
+        fs.existsSync(path.join('destPath', 'archiveName.zip')).should.be.true;
       });
-    });*/
+    });
 
   });
 

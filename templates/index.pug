@@ -4,12 +4,10 @@ html(lang="en")
     title="Ooyala Package Manager Sample Page"
     link(rel="shortcut icon" href="http://www.ooyala.com/sites/ooyala.com/files/favicon.png" type="image/png")
     link(href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet")
-    //- If package is bundled include only bundle script, otherwise load all stylesheets
-    if isBundle
-      script(type="text/javascript" src="bundle.js")
-    else
-      each styleSheetUrl in styleSheets
-        link(rel="stylesheet" href=styleSheetUrl)
+    each scriptUrl in scripts
+      script(src=scriptUrl)
+    each styleSheetUrl in styleSheets
+      link(rel="stylesheet" href=styleSheetUrl)
     //- If skin wasn't included use fallback css
     if !skinIncluded
       link(rel="stylesheet", href=skinFallbackUrls.css)
@@ -47,6 +45,11 @@ html(lang="en")
       .heading
         | Player Setup Guidelines
 
+      .section-msg
+        | For the purpose of these guidelines, it is assumed that your HTML page
+        | is located at the root of the package's folder, and that the package's
+        | directory structure is maintained.
+
       if styleSheets.length
         .section-msg
           = 'Add these stylesheets to the '
@@ -56,20 +59,31 @@ html(lang="en")
         pre.prettyprint
           - var html = ''
           each styleSheetUrl in styleSheets
-            - html = html + '<link href="' + styleSheetUrl + '"/>\n'
+            - html = html + '<link rel="stylesheet" href="' + styleSheetUrl + '"/>\n'
           = html
 
       .section-msg
-        = 'Include the player core and plugin scripts before your embed code:'
+        = 'Include the player core and plugin scripts before your embed code (placing them inside the '
+        strong
+          = '<head>'
+        = ' tag is recommended):'
       pre.prettyprint
         - var html = ''
         each scriptUrl in scripts
           - html = html + '<script src="' + scriptUrl + '"></script>\n'
         = html
 
+      if iframeIncluded
+        .section-msg
+          strong Please note:&nbsp;
+          | Your package includes the HTML iframe, which requires additional setup. Please refer to the&nbsp;
+          a.link(href="http://help.ooyala.com/video-platform/reference/pbv4_embed_iframe.html", target="_blank")
+            | HTML iframe Documentation
+          | &nbsp;for additional guidelines.
+
       .section-msg
         | For detailed setup instructions, please refer to the&nbsp;
-        a.link(href="http://support.ooyala.com/developers/documentation/reference/pbv4_web_tutorial.html", target="_blank")
+        a.link(href="http://help.ooyala.com/video-platform/concepts/pbv4_host.html", target="_blank")
           | Official Player V4 Documentation
         | .
 
@@ -100,16 +114,10 @@ html(lang="en")
     #error-notification.notification.error
 
     script(src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js")
-    //- Add all script files if build is not bundled
-    if !isBundle
-      each scriptUrl in scripts
-        script(type="text/javascript" src=scriptUrl)
 
     //- If skin was included, use it, otherwise use fallback url
     if skinIncluded
-      //- Bundles will already have this variable set to the actual json contents
-      if !isBundle
-        script window.ooSkinJson = 'skin-plugin/skin.json';
+      script window.ooSkinJson = 'skin-plugin/skin.json';
     else
       script window.ooSkinJson = '#{skinFallbackUrls.json}';
 

@@ -1,5 +1,6 @@
 const semver = require('semver');
 const path = require('path');
+const untildify = require('untildify');
 
 exports.wizardQuestions = (version) => {
   const questions = [
@@ -9,24 +10,24 @@ exports.wizardQuestions = (version) => {
       message: 'What Streaming Formats do you want to support?',
       choices: [
         { name: 'MP4', value: 'main-html5', checked: true },
-        { name: 'HLS', value: 'bit-wrapper' },
+        { name: 'HLS', value: ['main-html5', 'bit-wrapper'] },
         { name: 'DASH', value: 'bit-wrapper' },
         { name: 'HDS', value: 'osmf-flash' },
-        { name: 'HDS (Akamai)', value: 'akamai-hd-flash' }
+        { name: 'HDS (Akamai)', value: 'akamai-hd-flash' },
+        { name: 'YouTube Videos', value: 'youtube', v4Version: 'none' }
       ],
       validate: userInput => (userInput.length ? true : 'Please choose at least one format.')
     },
     {
       type: 'checkbox',
       name: 'ad',
-      message: 'What Advertising Platform(s) do you want to utilize?',
+      message: 'What Advertising Platform(s) do you want to use?',
       choices: [
-        { name: 'VAST/VPAID 2.0', value: 'ad-manager-vast' },
+        { name: 'VAST 2.0 & 3.0 / VPAID 2.0 / VMAP 1.0', value: 'ad-manager-vast' },
         { name: 'Pulse', value: 'pulse' },
         { name: 'Pulse SSAI', value: 'ssai-pulse' },
-        { name: 'Google IMA', value: 'google-ima' },
-        { name: 'Free Wheel', value: 'freewheel' },
-        { name: 'Live Rail', value: 'liverail' }
+        { name: 'Google IMA (Ad Rules / VAST 2.0 & 3.0 / VPAID 1.0 & 2.0)', value: 'google-ima' },
+        { name: 'FreeWheel', value: 'freewheel' }
       ]
     },
     {
@@ -54,6 +55,16 @@ exports.wizardQuestions = (version) => {
     },
     {
       type: 'list',
+      name: 'iframe',
+      message: 'Do you want to include the HTML iframe?',
+      choices: [
+        { name: 'YES - Include the iframe HTML file.', short: 'Yes', value: ['html-iframe'] },
+        { name: 'NO - Don\'t include the HTML iframe.', short: 'No', value: [] }
+      ],
+      default: 1
+    },
+    {
+      type: 'list',
       name: 'other',
       message: 'Do you want to include the Discovery plugin?',
       choices: [
@@ -62,24 +73,22 @@ exports.wizardQuestions = (version) => {
       ],
       default: 1
     },
-    /*
     {
       type: 'list',
       name: 'bundle',
-      message: 'Do you want to bundle scripts and styles into a single file?',
+      message: 'Do you want to bundle scripts into a single file?',
       choices: [
-        { name: 'YES - Bundle as many files as possible.', short: 'Yes', value: true },
+        { name: 'YES - Concatenate as many files as possible.', short: 'Yes', value: true },
         { name: 'NO - Keep files separate.', short: 'No', value: false }
       ],
-      default: 1
+      default: 0
     },
-    */
     {
       type: 'input',
       name: 'outputPath',
       message: 'Enter a destination folder path for the .zip package:',
-      default: process.cwd(),
-      filter: outputPath => path.normalize(outputPath)
+      default: (process.env.NODE_ENV === 'production') ? process.cwd() : path.join(process.cwd(), 'dist'),
+      filter: outputPath => untildify(path.normalize(outputPath))
     }
   ];
 

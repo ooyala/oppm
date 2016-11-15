@@ -2,6 +2,13 @@
 
 **Ooyala Player Package Manager** is a command-line interface geared towards Ooyala customers that are interested in self-hosting the V4 Player. The utility allows you to easily download all the necessary plugins and assets that will be needed for your particular V4 Player use case.
 
+#### Beta Disclaimer
+
+Please note that this is a beta version of the **Ooyala Player Package Manager** which is
+still undergoing final testing before its official release. The website, its software and all content found on it are provided on an "as is" and "as available" basis.
+
+Ooyala does not give any warranties, whether express or implied, as to the suitability or usability of the website, its software or any of its content.
+
 ## Important
 
 **You'll need Node v4.0 or higher to run this program.**
@@ -39,6 +46,19 @@ cd path_to_unzipped_package_contents
 ```
 node run_sample.js
 ```
+
+#### Bundling scripts
+**oppm** can automatically concatenate some of the package's scripts into a single `player_bundle.js` file. To concatenate scripts, simply choose the `YES` option when prompted by the wizard.
+
+Bundling script files together can be useful if you want to reduce the number of requests to your server. If your package size is not too large (i.e. you don't require too many plugins), then bundling might provide a performance increase during page load. Bundling scripts on packages with a large number of plugins is not recommended.
+
+## Installation Troubleshooting
+
+#### npm issues with Homebrew on OS X
+Installing Node.js through Homebrew can cause problems with npm for globally installed packages such as **oppm**. Please refer to [this link](https://gist.github.com/DanHerbert/9520689) for a possible solution.
+
+#### Getting a **EACCES** error when installing
+This usually means that you do not have permission to write to the folders where npm installs packages. You can fix this issue by following [these steps](https://docs.npmjs.com/getting-started/fixing-npm-permissions).
 
 ## For Developers
 For initial project setup, simply run this inside the main project folder:

@@ -86,6 +86,13 @@ module.exports = {
           ]
         }
       ]
+    },
+    {
+      id: 'html-iframe',
+      name: 'Html iframe',
+      path: BASE_PLUGIN_PATH,
+      fileName: 'iframe.html',
+      dependencies: []
     }
   ]
 };
