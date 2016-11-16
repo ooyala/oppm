@@ -15,15 +15,44 @@ describe('Utils', () => {
     chai.should();
   });
 
+  afterEach(() => {
+    mockFs.restore();
+  });
+
   it('should be ok', () => {
     expect(utils).to.be.ok;
   });
 
-  describe('concatFiles', () => {
+  describe('ensureTmpDir', () => {
 
-    afterEach(() => {
-      mockFs.restore();
+    it('should ensure that sub temp directory exists', () => {
+      mockFs({});
+      const tmpDir = utils.ensureTmpDir('dist');
+      expect(fs.existsSync(tmpDir)).to.be.true;
     });
+
+  });
+
+  describe('flattenArray', () => {
+
+    it('should convert a nested array into a flat array', () => {
+      const array = [1, 2, [3, 4], 5, [6, [7]]];
+      expect(utils.flattenArray(array)).to.eql([1, 2, 3, 4, 5, 6, 7]);
+    });
+
+  });
+
+  describe('mergeDedupeArray', () => {
+
+    it('should return a single array with unique values', () => {
+      const arr1 = [1, 2, 3, 4];
+      const arr2 = [3, 1, 4, 5, 6];
+      expect(utils.mergeDedupeArray(arr1, arr2)).to.eql([1, 2, 3, 4, 5, 6]);
+    });
+
+  });
+
+  describe('concatFiles', () => {
 
     it('should concatenate files into a single bundle', () => {
       mockFs({
@@ -62,10 +91,6 @@ describe('Utils', () => {
   });
 
   describe('copyFiles', () => {
-
-    afterEach(() => {
-      mockFs.restore();
-    });
 
     it('should copy files to the specified destination', () => {
       mockFs({
