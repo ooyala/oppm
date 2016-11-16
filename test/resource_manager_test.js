@@ -27,12 +27,17 @@ const mockResources = [
   }
 ];
 
-const createMockPlugin = (id, pluginPath) => ({
+const createMockPlugin = (id, pluginPath, extension) => ({
   id: id,
   name: id,
   path: pluginPath || '',
-  fileName: `${id}.js`,
+  fileName: `${id}${extension || '.js'}`,
   dependencies: []
+});
+
+const createMockDependency = (fileName, dependencyPath) => ({
+  path: dependencyPath || '',
+  fileName: fileName,
 });
 
 const createMockPluginGroup = (id, pluginPath) => ({
@@ -77,6 +82,7 @@ describe('ResourceManager', () => {
     it('should filter resources of selected plugins', () => {
       filters.video = ['video'];
       filters.analytics = ['analytics'];
+
       const filteredResources = resourceManager.filterPluginResources(plugins, '4.8.1', 'stable', filters);
       expect(filteredResources.length).to.equal(3);
       expect(filteredResources[0].fileName).to.equal('core.js'); // Core is always included
@@ -85,16 +91,30 @@ describe('ResourceManager', () => {
     });
 
     it('should include dependencies first', () => {
-      plugins.videoPlugins.dependencies.push(createMockPlugin('dep1'));
-      plugins.skinPlugins.plugins[0].dependencies.push(createMockPlugin('dep2'));
+      plugins.videoPlugins.dependencies.push(createMockDependency('dep1.js'));
+      plugins.skinPlugins.plugins[0].dependencies.push(createMockDependency('dep2.js'));
       filters.video = ['video'];
       filters.skin = ['skin'];
+
       const filteredResources = resourceManager.filterPluginResources(plugins, '4.8.1', 'stable', filters);
+      expect(filteredResources.length).to.equal(5);
       expect(filteredResources[0].fileName).to.equal('core.js')
       expect(filteredResources[1].fileName).to.equal('dep1.js');
       expect(filteredResources[2].fileName).to.equal('video.js');
       expect(filteredResources[3].fileName).to.equal('dep2.js');
       expect(filteredResources[4].fileName).to.equal('skin.js');
+    });
+
+    it('should exclude or include resources depending on version restrictions', () => {
+      plugins.videoPlugins.plugins[0].v4Version = '>=4.9.2';
+      filters.video = ['video'];
+      filters.skin = ['skin'];
+      filters.analytics = ['analytics'];
+
+      let filteredResources = resourceManager.filterPluginResources(plugins, '4.8.1', 'stable', filters);
+      expect(filteredResources.some(resource => resource.fileName === 'video.js')).to.be.false;
+      filteredResources = resourceManager.filterPluginResources(plugins, '4.9.3', 'stable', filters);
+      expect(filteredResources.some(resource => resource.fileName === 'video.js')).to.be.true;
     });
 
   });
