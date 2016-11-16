@@ -11,6 +11,11 @@ const resourceManager = require('../lib/resource_manager');
 
 const mockResources = [
   {
+    path: '',
+    fileName: 'resource0.txt',
+    url: `${config.RESOURCE_ROOT}/resource0.txt`
+  },
+  {
     path: 'subPath1',
     fileName: 'resource1.txt',
     url: `${config.RESOURCE_ROOT}/subPath1/resource1.txt`
@@ -22,20 +27,84 @@ const mockResources = [
   }
 ];
 
+const createMockPlugin = (id, pluginPath) => ({
+  id: id,
+  name: id,
+  path: pluginPath || '',
+  fileName: `${id}.js`,
+  dependencies: []
+});
+
+const createMockPluginGroup = (id, pluginPath) => ({
+  dependencies: [],
+  plugins: [createMockPlugin(id, pluginPath)]
+});
+
 describe('ResourceManager', () => {
-  let scope = null;
 
   before(() => {
     chai.use(chaiAsPromised);
     chai.should();
-    scope = nock(config.RESOURCE_ROOT);
   });
 
   it('should be ok', () => {
     expect(resourceManager).to.be.ok;
   });
 
+  describe('filterPluginResources', () => {
+    let plugins = null;
+    let filters = null;
+
+    beforeEach(() => {
+      plugins = {
+        corePlugins: createMockPluginGroup('core'),
+        videoPlugins: createMockPluginGroup('video'),
+        otherPlugins: createMockPluginGroup('other'),
+        skinPlugins: createMockPluginGroup('skin'),
+        adPlugins: createMockPluginGroup('ad'),
+        analyticsPlugins: createMockPluginGroup('analytics')
+      };
+      filters = {
+        core: [],
+        video: [],
+        other: [],
+        skin: [],
+        ad: [],
+        analytics: []
+      };
+    });
+
+    it('should filter resources of selected plugins', () => {
+      filters.video = ['video'];
+      filters.analytics = ['analytics'];
+      const filteredResources = resourceManager.filterPluginResources(plugins, '4.8.1', 'stable', filters);
+      expect(filteredResources.length).to.equal(3);
+      expect(filteredResources[0].fileName).to.equal('core.js'); // Core is always included
+      expect(filteredResources[1].fileName).to.equal('video.js');
+      expect(filteredResources[2].fileName).to.equal('analytics.js');
+    });
+
+    it('should include dependencies first', () => {
+      plugins.videoPlugins.dependencies.push(createMockPlugin('dep1'));
+      plugins.skinPlugins.plugins[0].dependencies.push(createMockPlugin('dep2'));
+      filters.video = ['video'];
+      filters.skin = ['skin'];
+      const filteredResources = resourceManager.filterPluginResources(plugins, '4.8.1', 'stable', filters);
+      expect(filteredResources[0].fileName).to.equal('core.js')
+      expect(filteredResources[1].fileName).to.equal('dep1.js');
+      expect(filteredResources[2].fileName).to.equal('video.js');
+      expect(filteredResources[3].fileName).to.equal('dep2.js');
+      expect(filteredResources[4].fileName).to.equal('skin.js');
+    });
+
+  });
+
   describe('downloadResources', () => {
+    let scope = null;
+
+    before(() => {
+      scope = nock(config.RESOURCE_ROOT);
+    });
 
     beforeEach(() => {
       mockFs({
@@ -49,6 +118,8 @@ describe('ResourceManager', () => {
 
     it('should download resources to the specified path and maintain resource directory structure', () => {
       scope
+      .get('/resource0.txt')
+      .reply(200, 'data0')
       .get('/subPath1/resource1.txt')
       .reply(200, 'data1')
       .get('/subPath2/resource2.txt')
@@ -63,12 +134,34 @@ describe('ResourceManager', () => {
 
     it('should reject promise when a resource fails to download', () => {
       scope
+      .get('/resource0.txt')
+      .reply(200, 'data0')
       .get('/subPath1/resource1.txt')
       .reply(200, 'data1')
       .get('/subPath2/resource2.txt')
       .reply(401, 'Unauthorized');
 
       return resourceManager.downloadResources(mockResources, 'destPath', false).should.be.rejected;
+    });
+
+  });
+
+  describe('buildRelativeResourcePath', () => {
+
+    it('should build resource path correctly', () => {
+      expect(resourceManager.buildRelativeResourcePath(mockResources[0])).to.equal('resource0.txt');
+      expect(resourceManager.buildRelativeResourcePath(mockResources[1])).to.equal('subPath1/resource1.txt');
+    })
+
+    it('should use bundlePath when available', () => {
+      const resource = {
+        path: 'subPath1',
+        bundlePath: '',
+        fileName: 'resource1.txt',
+        url: `${config.RESOURCE_ROOT}/subPath1/resource1.txt`
+      };
+      expect(resourceManager.buildRelativeResourcePath(resource, true)).to.equal('resource1.txt');
+      expect(resourceManager.buildRelativeResourcePath(mockResources[1], true)).to.equal('subPath1/resource1.txt');
     });
 
   });
