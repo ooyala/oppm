@@ -43,7 +43,7 @@ describe('SamplePage', () => {
   });
 
   it('should be ok', () => {
-    samplePage.should.be.ok;
+    expect(samplePage).to.be.ok;
   });
 
   describe('create', () => {

@@ -20,7 +20,7 @@ describe('PackageManager', () => {
   });
 
   it('should be ok', () => {
-    packageManager.should.be.ok;
+    expect(packageManager).to.be.ok;
   });
 
   describe('createPackageArchive', () => {
