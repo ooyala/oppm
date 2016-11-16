@@ -8,6 +8,12 @@ const fs = require('fs-extra');
 const path = require('path');
 const packageManager = require('../lib/package_manager');
 
+const createMockResource = (resourcePath, fileName) => ({
+  path: resourcePath,
+  fileName: fileName,
+  url: `http://foo.bar/${resourcePath}/${fileName}`
+});
+
 describe('PackageManager', () => {
 
   before(() => {
@@ -23,9 +29,49 @@ describe('PackageManager', () => {
     expect(packageManager).to.be.ok;
   });
 
+  describe('generateManifest', () => {
+
+    it('should correctly separate bundled and unbundled resources', () => {
+      const resources = [
+        createMockResource('path', 'script1.min.js'),
+        createMockResource('path', 'stylesheet1.css'),
+        createMockResource('path', 'script2.js'),
+        createMockResource('path', 'script3.min.js'),
+        createMockResource('path', 'image1.png')
+      ];
+      const manifest = packageManager.generateManifest('4.8.1', resources);
+      expect(manifest.bundledResources).to.eql([
+        createMockResource('path', 'script1.min.js'),
+        createMockResource('path', 'script2.js'),
+        createMockResource('path', 'script3.min.js')
+      ]);
+      expect(manifest.unbundledResources).to.eql([
+        createMockResource('path', 'stylesheet1.css'),
+        createMockResource('path', 'image1.png')
+      ]);
+    });
+
+    it('should not bundle resources that don\'t satisify version criteria', () => {
+      const unbundleableResource1 = createMockResource('path', 'script2.js');
+      const unbundleableResource2 = createMockResource('path', 'script3.js');
+      unbundleableResource1.bundleableV4Version = '>=4.9.2';
+      unbundleableResource2.bundleableV4Version = 'none';
+      const resources = [
+        createMockResource('path', 'script1.min.js'),
+        unbundleableResource1,
+        unbundleableResource2
+      ];
+      const manifest = packageManager.generateManifest('4.8.1', resources);
+      expect(manifest.bundledResources).to.eql([
+        createMockResource('path', 'script1.min.js')
+      ]);
+    });
+
+  });
+
   describe('createPackageArchive', () => {
 
-    it('compress source directory into a single .zip file', () => {
+    it('should compress source directory into a single .zip file', () => {
       mockFs({
         sourcePath: {
           file1: 'data1',
