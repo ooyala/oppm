@@ -4,7 +4,7 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const expect = chai.expect;
 const mockFs = require('mock-fs');
-const fs = require('./test_utils').patchMockFs(require('fs-extra'));
+const fs = require('fs-extra');
 const path = require('path');
 const packageManager = require('../lib/package_manager');
 
