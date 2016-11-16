@@ -39,6 +39,11 @@ describe('PackageManager', () => {
       });
     });
 
+    it('should reject the promise when an error occurs', () => {
+      mockFs({});
+      return packageManager.createPackageArchive('sourcePath', 'destPath', 'archiveName').should.be.rejected;
+    });
+
   });
 
 });
