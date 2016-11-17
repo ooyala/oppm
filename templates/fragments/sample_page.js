@@ -6,9 +6,7 @@ var DEFAULT_PLAYER_OPTIONS = {
   'autoplay': false,
   'debug': true,
   'platform': 'html5',
-  'skin': {
-    'config': ''
-  }
+  'skin': {}
 };
 
 var _embedCodeInput = null;
@@ -151,7 +149,7 @@ function applyFormParams(scroll) {
 }
 
 function updatePlayerOptionsInputHeight() {
-  _playerOptionsInput.style.height = _playerOptionsInput.scrollHeight + 'px';
+  _playerOptionsInput.style.height = (_playerOptionsInput.scrollHeight + 2) + 'px';
 }
 
 function showNotification(message) {
