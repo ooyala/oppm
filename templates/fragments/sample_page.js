@@ -72,7 +72,11 @@ function getInitialParams() {
   // Default embed code doesn't have a skin.json since this is generated dynamically.
   // window.ooSkinJson is injected by the pug template
   if (params.options && params.options.skin && !params.options.skin.config) {
-    params.options.skin.config = window.ooSkinJson;
+    if (window.ooSkinJson) {
+      params.options.skin.config = window.ooSkinJson;
+    } else {
+      delete params.options.skin.config;
+    }
   }
   return params;
 }

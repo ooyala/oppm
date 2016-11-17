@@ -14,7 +14,7 @@ exports.wizardQuestions = (version) => {
         { name: 'DASH', value: 'bit-wrapper' },
         { name: 'HDS', value: 'osmf-flash' },
         { name: 'HDS (Akamai)', value: 'akamai-hd-flash' },
-        { name: 'YouTube Videos', value: 'youtube', v4Version: 'none' }
+        { name: 'YouTube Videos', value: 'youtube', v4Version: '>=4.10.2' }
       ],
       validate: userInput => (userInput.length ? true : 'Please choose at least one format.')
     },
