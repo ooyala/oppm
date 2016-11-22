@@ -1,6 +1,6 @@
 {
   "name": "oppm",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Ooyala Player Package Manager",
   "preferGlobal": true,
   "bin": {
@@ -49,7 +49,7 @@
     "eslint-plugin-react": "^6.7.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.2",
-    "mock-fs": "^3.11.0",
+    "mock-fs": "3.10.0",
     "nock": "^9.0.2"
   }
 }

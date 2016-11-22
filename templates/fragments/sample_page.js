@@ -6,9 +6,7 @@ var DEFAULT_PLAYER_OPTIONS = {
   'autoplay': false,
   'debug': true,
   'platform': 'html5',
-  'skin': {
-    'config': ''
-  }
+  'skin': {}
 };
 
 var _embedCodeInput = null;
@@ -72,7 +70,11 @@ function getInitialParams() {
   // Default embed code doesn't have a skin.json since this is generated dynamically.
   // window.ooSkinJson is injected by the pug template
   if (params.options && params.options.skin && !params.options.skin.config) {
-    params.options.skin.config = window.ooSkinJson;
+    if (window.ooSkinJson) {
+      params.options.skin.config = window.ooSkinJson;
+    } else {
+      delete params.options.skin.config;
+    }
   }
   return params;
 }
@@ -147,7 +149,7 @@ function applyFormParams(scroll) {
 }
 
 function updatePlayerOptionsInputHeight() {
-  _playerOptionsInput.style.height = _playerOptionsInput.scrollHeight + 'px';
+  _playerOptionsInput.style.height = (_playerOptionsInput.scrollHeight + 2) + 'px';
 }
 
 function showNotification(message) {

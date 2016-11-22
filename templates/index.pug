@@ -115,8 +115,11 @@ html(lang="en")
 
     script(src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js")
 
+    //- Skin is bundled inside html5-skin plugin, no need to add a url to it
+    if skinIsBundled
+      script window.ooSkinJson = null;
     //- If skin was included, use it, otherwise use fallback url
-    if skinIncluded
+    else if skinIncluded
       script window.ooSkinJson = 'skin-plugin/skin.json';
     else
       script window.ooSkinJson = '#{skinFallbackUrls.json}';

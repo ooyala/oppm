@@ -15,6 +15,7 @@ module.exports = {
       name: 'Skin.json',
       path: BASE_PLUGIN_PATH,
       fileName: 'skin.json',
+      v4Version: '<4.10.0',
       dependencies: [
         {
           path: BASE_PLUGIN_PATH,
@@ -22,15 +23,18 @@ module.exports = {
         },
         {
           path: BASE_PLUGIN_PATH,
-          fileName: 'en.json'
+          fileName: 'en.json',
+          v4Version: '<4.10.0'
         },
         {
           path: BASE_PLUGIN_PATH,
-          fileName: 'es.json'
+          fileName: 'es.json',
+          v4Version: '<4.10.0'
         },
         {
           path: BASE_PLUGIN_PATH,
-          fileName: 'zh.json'
+          fileName: 'zh.json',
+          v4Version: '<4.10.0'
         },
         {
           path: `${BASE_PLUGIN_PATH}/assets`,

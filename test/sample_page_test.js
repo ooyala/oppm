@@ -1,7 +1,6 @@
 'use strict';
 
 const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
 const expect = chai.expect;
 const mockFs = require('mock-fs');
 const fs = require('fs');
@@ -33,17 +32,12 @@ const mockResources = [
 
 describe('SamplePage', () => {
 
-  before(() => {
-    chai.use(chaiAsPromised);
-    chai.should();
-  });
-
   afterEach(() => {
     mockFs.restore();
   });
 
   it('should be ok', () => {
-    samplePage.should.be.ok;
+    expect(samplePage).to.be.ok;
   });
 
   describe('create', () => {

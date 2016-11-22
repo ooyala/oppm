@@ -17,6 +17,7 @@ const pluginUtils = require('./lib/plugin_utils');
 const samplePage = require('./lib/sample_page');
 const utils = require('./lib/utils');
 const inquirer = require('inquirer');
+const semver = require('semver');
 const Spinner = require('cli-spinner').Spinner;
 const chalk = require('chalk');
 
@@ -124,6 +125,8 @@ const runPackageManager = (params, buildType, options) => {
     const spinner = new Spinner();
     // Determine whether skin.json was amongst the chosen options
     const skinIncluded = (options.skin || []).some(pluginId => pluginId === 'skin-json');
+    // From 4.10.0 onwards, the skin.json is bundled inside the html5-skin plugin
+    const skinIsBundled = semver.satisfies(params.version, '>=4.10.0');
     // Filter plugin assets and obtain a list all required files and dependencies
     const resources = resourceManager.filterPluginResources(plugins, params.version, buildType, options);
 
@@ -131,7 +134,7 @@ const runPackageManager = (params, buildType, options) => {
 
     resourceManager.downloadResources(resources, mainBuildPath, true)
     .then(() => {
-      if (!skinIncluded) {
+      if (!skinIncluded || skinIsBundled) {
         return Promise.resolve();
       }
       const skinJson = plugins.skinPlugins.plugins.find(plugin => plugin.id === 'skin-json');
@@ -154,6 +157,7 @@ const runPackageManager = (params, buildType, options) => {
         version: params.version,
         isBundle: options.bundle,
         skinIncluded,
+        skinIsBundled,
         iframeIncluded: (options.skin || []).some(pluginId => pluginId === 'html-iframe'),
         skinFallbackUrls: {
           css: `${config.RESOURCE_ROOT}/${buildType}/${params.version}/skin-plugin/html5-skin.min.css`,
