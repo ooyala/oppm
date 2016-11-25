@@ -4,7 +4,7 @@
   "description": "Ooyala Player Package Manager",
   "preferGlobal": true,
   "bin": {
-    "oppm": "index.js"
+    "oppm": "bin/oppm.js"
   },
   "engines": {
     "node": ">=4"

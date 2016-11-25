@@ -1,5 +1,3 @@
-#!/usr/bin/env NODE_ENV=production node
-
 'use strict';
 
 const packageJson = require('./package.json');
