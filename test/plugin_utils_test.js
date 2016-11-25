@@ -64,4 +64,50 @@ describe('PluginUtils', () => {
 
   });
 
+  describe('extractPackageOptions', () => {
+
+    it('should include main_html5 when FreeWheel or Ad Manager Vast are selected', () => {
+      const opts1 = pluginUtils.extractPackageOptions({ video: ['bit-wrapper'], ad: ['freewheel'] });
+      const opts2 = pluginUtils.extractPackageOptions({ video: ['bit-wrapper', 'akamai-hd-flash'], ad: ['ad-manager-vast'] });
+
+      expect(opts1.video.some(plugin => plugin === 'main-html5')).to.be.true;
+      expect(opts2.video.some(plugin => plugin === 'main-html5')).to.be.true;
+    });
+
+    it('should only include main_html5 once when multiple conditions require it', () => {
+      const opts1 = pluginUtils.extractPackageOptions({ video: ['main-html5', ['main-html5', 'bit-wrapper']] });
+      const opts2 = pluginUtils.extractPackageOptions({ video: ['main-html5'], ad: ['freewheel'] });
+
+      expect(opts1.video.reduce((count, plugin) =>
+        count + (plugin === 'main-html5' ? 1 : 0)
+      , 0)).to.equal(1);
+      expect(opts2.video.reduce((count, plugin) =>
+        count + (plugin === 'main-html5' ? 1 : 0)
+      , 0)).to.equal(1);
+    });
+
+    it('should merge iframe with skin options', () => {
+      const opts = pluginUtils.extractPackageOptions({ skin: ['html5-skin', 'skin-json'], iframe: ['html-iframe'] });
+
+      expect(opts.iframe).to.be.undefined;
+      expect(opts.skin).to.eql(['html5-skin', 'skin-json', 'html-iframe']);
+    });
+
+    it ('should not duplicate video options', () => {
+      const opts = pluginUtils.extractPackageOptions({ video: ['main-html5', ['main-html5', 'bit-wrapper'], 'bit-wrapper'] });
+      expect(opts.video).to.eql(['main-html5', 'bit-wrapper']);
+    });
+
+    it ('should include main_html5 first', () => {
+      const opts1 = pluginUtils.extractPackageOptions({
+        video: ['bit-wrapper', ['main-html5', 'bit-wrapper'], 'main-html5']
+      });
+      const opts2 = pluginUtils.extractPackageOptions({ video: ['osmf-flash'], ad: ['freewheel'] });
+
+      expect(opts1.video[0]).to.equal('main-html5');
+      expect(opts2.video[0]).to.equal('main-html5');
+    });
+
+  });
+
 });
