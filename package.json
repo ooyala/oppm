@@ -1,15 +1,16 @@
 {
   "name": "oppm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Ooyala Player Package Manager",
   "preferGlobal": true,
   "bin": {
-    "oppm": "index.js"
+    "oppm": "bin/oppm.js"
   },
   "engines": {
     "node": ">=4"
   },
   "scripts": {
+    "preversion": "npm test",
     "test": "istanbul cover _mocha $(find test -name '*_test.js') && npm run linter",
     "linter": "./node_modules/.bin/eslint index.js lib/** config/** || exit 0"
   },
@@ -31,6 +32,9 @@
     "escape-string-regexp": "^1.0.5",
     "fs-extra": "^1.0.0",
     "inquirer": "^1.2.1",
+    "lodash.flatten": "^4.4.0",
+    "lodash.union": "^4.6.0",
+    "lodash.uniq": "^4.5.0",
     "md5-file": "^3.1.1",
     "minimist": "^1.2.0",
     "pug": "^2.0.0-beta6",

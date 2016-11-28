@@ -1,5 +1,3 @@
-#!/usr/bin/env NODE_ENV=production node
-
 'use strict';
 
 const packageJson = require('./package.json');
@@ -15,7 +13,6 @@ const resourceManager = require('./lib/resource_manager');
 const packageManager = require('./lib/package_manager');
 const pluginUtils = require('./lib/plugin_utils');
 const samplePage = require('./lib/sample_page');
-const utils = require('./lib/utils');
 const inquirer = require('inquirer');
 const semver = require('semver');
 const Spinner = require('cli-spinner').Spinner;
@@ -54,24 +51,6 @@ const getParameters = () => {
 };
 
 /**
- * Performs some additional processing on the answers object returned by inquirer.
- * The object returned can be used as an options parameter for the <tt>runPackageManager</tt> function.
- * @param {object} inquirerAnswers The answers object returned by the inquirer prompt
- * @return {object} An options object that has the format required by <tt>runPackageManager</tt>
- */
-const extractPackageOptions = (inquirerAnswers) => {
-  const packageOptions = Object.assign({}, inquirerAnswers);
-  // There's a special case in which we need to include main_html5 along with bit_wrapper when
-  // HLS is chosen (in order to support mobile). Inquirer doesn't support this out of the box
-  packageOptions.video = utils.flattenArray(packageOptions.video);
-  // Skin and iframe belong to the same plugin group, but depend on different questions.
-  // We need to merge both answers into a single skin group
-  packageOptions.skin = utils.mergeDedupeArray(packageOptions.skin, packageOptions.iframe);
-  delete packageOptions.iframe;
-  return packageOptions;
-};
-
-/**
  * Main entry point of the application.
  */
 const app = () => {
@@ -102,7 +81,7 @@ const app = () => {
     console.log(chalk.white(`Player V4 Version: ${params.version} (${buildType})`));
     return inquirer.prompt(wizardQuestions(params.version));
   })
-  .then(answers => runPackageManager(params, buildType, extractPackageOptions(answers)))
+  .then(answers => runPackageManager(params, buildType, pluginUtils.extractPackageOptions(answers)))
   .catch((error) => {
     spinner.stop(true);
     console.log(chalk.red(error.message));
