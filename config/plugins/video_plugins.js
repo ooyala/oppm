@@ -16,14 +16,17 @@ module.exports = {
       path: BASE_PLUGIN_PATH,
       fileName: 'bit_wrapper.min.js',
       dependencies: [
+        // --- Bitmovin 5 files --- //
         {
           path: BASE_PLUGIN_PATH,
-          fileName: 'bitdashplayer.min.js'
+          fileName: 'bitdashplayer.min.js',
+          v4Version: '<=4.11.5'
         },
         {
           path: BASE_PLUGIN_PATH,
           bundlePath: '',
           fileName: 'bitdashplayer.min.css',
+          v4Version: '<=4.11.5',
           bundleableV4Version: 'none',
           excludeFromPage: true
         },
@@ -31,7 +34,7 @@ module.exports = {
           path: BASE_PLUGIN_PATH,
           bundlePath: '',
           fileName: 'bitdash-controls.min.js',
-          v4Version: '>=4.6.3',
+          v4Version: '>=4.6.3 <=4.11.5',
           bundleableV4Version: 'none',
           excludeFromPage: true
         },
@@ -39,14 +42,54 @@ module.exports = {
           path: BASE_PLUGIN_PATH,
           bundlePath: '',
           fileName: 'bitdash-controls.min.css',
-          v4Version: '>=4.6.3',
+          v4Version: '>=4.6.3 <=4.11.5',
           bundleableV4Version: 'none',
           excludeFromPage: true
         },
         {
           path: BASE_PLUGIN_PATH,
           bundlePath: '',
-          fileName: 'bitdashplayer.swf'
+          fileName: 'bitdashplayer.swf',
+          v4Version: '<=4.11.5'
+        },
+        // --- Bitmovin 6 files --- //
+        {
+          path: BASE_PLUGIN_PATH,
+          bundlePath: '',
+          fileName: 'bitmovinplayer-core.min.js',
+          v4Version: '>=4.11.6',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
+        },
+        {
+          path: BASE_PLUGIN_PATH,
+          bundlePath: '',
+          fileName: 'bitmovinplayer-core.min.css',
+          v4Version: '>=4.11.6',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
+        },
+        {
+          path: BASE_PLUGIN_PATH,
+          bundlePath: '',
+          fileName: 'bitmovinplayer-controls.min.js',
+          v4Version: '>=4.11.6',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
+        },
+        {
+          path: BASE_PLUGIN_PATH,
+          bundlePath: '',
+          fileName: 'bitmovinplayer-controls.min.css',
+          v4Version: '>=4.11.6',
+          bundleableV4Version: 'none',
+          excludeFromPage: true
+        },
+        {
+          path: BASE_PLUGIN_PATH,
+          bundlePath: '',
+          fileName: 'bitmovinplayer.swf',
+          v4Version: '>=4.11.6'
         }
       ]
     },
